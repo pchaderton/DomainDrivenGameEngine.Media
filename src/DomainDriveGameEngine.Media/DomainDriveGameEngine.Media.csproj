@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <PackageId>DomainDrivenGameEngine.Media</PackageId>
-    <Version>0.1.0</Version>
+    <Description>A set of services and models for managing media for .Net based game engines.</Description>
+    <Version>0.1.1</Version>
     <Authors>Preston Chaderton</Authors>
     <Company>Preston Chaderton</Company>
     <RepositoryUrl>https://github.com/pchaderton/DomainDrivenGameEngine.Media</RepositoryUrl>
