@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>DomainDrivenGameEngine.Media</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Preston Chaderton</Authors>
+    <Company>Preston Chaderton</Company>
+    <RepositoryUrl>https://github.com/pchaderton/DomainDrivenGameEngine.Media</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DomainDrivenGameEngine.RuleSet" Version="0.1.2" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>
