@@ -7,7 +7,7 @@ namespace DomainDriveGameEngine.Media.Services
     /// </summary>
     /// <typeparam name="TMediaType">The type of media this service loads into an implementation.</typeparam>
     /// <typeparam name="TMediaImplementation">The type of implementation that is loaded.</typeparam>
-    public interface IMediaLoadingService<TMediaType, TMediaImplementation>
+    public interface IMediaLoadingService<TMediaType, TMediaImplementation> : IMediaReferenceService<TMediaType>
         where TMediaType : class, IMedia
         where TMediaImplementation : class, IMediaImplementation
     {
@@ -19,8 +19,8 @@ namespace DomainDriveGameEngine.Media.Services
         TMediaImplementation GetImplementation(IReference<TMediaType> reference);
 
         /// <summary>
-        /// Handles processing any reference changes, queueing up background tasks to load media and process it into their final implementations.
+        /// Handles processing any loaded media into their final implementations.
         /// </summary>
-        void ProcessReferenceUpdates();
+        void ProcessLoadedMedia();
     }
 }
