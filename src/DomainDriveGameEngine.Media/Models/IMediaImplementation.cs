@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DomainDriveGameEngine.Media.Models
+namespace DomainDrivenGameEngine.Media.Models
 {
     /// <summary>
     /// An implementation of a loaded piece of media.

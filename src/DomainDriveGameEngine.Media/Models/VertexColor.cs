@@ -1,4 +1,4 @@
-﻿namespace DomainDriveGameEngine.Media.Models
+﻿namespace DomainDrivenGameEngine.Media.Models
 {
     /// <summary>
     /// A struct describing a color for a vertex.

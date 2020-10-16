@@ -1,4 +1,4 @@
-﻿namespace DomainDriveGameEngine.Media.Models
+﻿namespace DomainDrivenGameEngine.Media.Models
 {
     /// <summary>
     /// The supported pixel formats.

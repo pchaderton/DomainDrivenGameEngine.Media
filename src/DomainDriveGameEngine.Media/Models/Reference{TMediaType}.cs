@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DomainDriveGameEngine.Media.Models
+namespace DomainDrivenGameEngine.Media.Models
 {
     /// <summary>
     /// A reference to a piece of media.

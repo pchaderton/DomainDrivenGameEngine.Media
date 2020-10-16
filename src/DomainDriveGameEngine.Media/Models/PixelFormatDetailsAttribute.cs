@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DomainDriveGameEngine.Media.Models
+namespace DomainDrivenGameEngine.Media.Models
 {
     /// <summary>
     /// An attribute describing the details of a pixel format.

@@ -1,6 +1,6 @@
-﻿using DomainDriveGameEngine.Media.Models;
+﻿using DomainDrivenGameEngine.Media.Models;
 
-namespace DomainDriveGameEngine.Media.Services
+namespace DomainDrivenGameEngine.Media.Services
 {
     /// <summary>
     /// An interface to a service for keeping track of references to media being used in the business logic of the application.

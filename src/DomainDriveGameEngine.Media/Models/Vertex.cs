@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace DomainDriveGameEngine.Media.Models
+namespace DomainDrivenGameEngine.Media.Models
 {
     /// <summary>
     /// A struct describing a single vertex in a mesh.

@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DomainDriveGameEngine.Media.Models;
+using DomainDrivenGameEngine.Media.Models;
 
-namespace DomainDriveGameEngine.Media.Services
+namespace DomainDrivenGameEngine.Media.Services
 {
     /// <summary>
     /// A service for loading referenced media for a specific implementation.

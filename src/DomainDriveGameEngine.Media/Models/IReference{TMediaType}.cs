@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DomainDriveGameEngine.Media.Models
+namespace DomainDrivenGameEngine.Media.Models
 {
     /// <summary>
     /// An interface to a reference to a piece of media.
