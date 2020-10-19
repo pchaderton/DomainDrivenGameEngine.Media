@@ -38,6 +38,11 @@ namespace DomainDrivenGameEngine.Media.Services
         private readonly IReadOnlyCollection<IMediaSourceService<TMediaType>> _mediaSourceServices;
 
         /// <summary>
+        /// Implementations that are no longer referenced and need to be unloaded.
+        /// </summary>
+        private readonly List<TMediaImplementation> _oldImplementations;
+
+        /// <summary>
         /// A lookup of reference counts by reference ID.
         /// </summary>
         private readonly IDictionary<int, int> _referenceCountsByReferenceId;
@@ -57,6 +62,7 @@ namespace DomainDrivenGameEngine.Media.Services
             _inProgressTaskCancellationTokenSources = new Dictionary<int, CancellationTokenSource>();
             _inProgressTasks = new Dictionary<int, IReadOnlyCollection<Task<TMediaType>>>();
             _loadedImplementationsByReferenceId = new Dictionary<int, TMediaImplementation>();
+            _oldImplementations = new List<TMediaImplementation>();
             _referenceCountsByReferenceId = new Dictionary<int, int>();
             _referencesByJoinedPaths = new Dictionary<string, Reference<TMediaType>>();
         }
@@ -71,9 +77,14 @@ namespace DomainDrivenGameEngine.Media.Services
         /// </summary>
         public virtual void Dispose()
         {
+            foreach (var oldImplementation in _oldImplementations)
+            {
+                UnloadImplementation(oldImplementation);
+            }
+
             foreach (var loadedImplementationByKvp in _loadedImplementationsByReferenceId)
             {
-                loadedImplementationByKvp.Value.Dispose();
+                UnloadImplementation(loadedImplementationByKvp.Value);
             }
 
             foreach (var inProgressTaskKvp in _inProgressTasks)
@@ -87,6 +98,7 @@ namespace DomainDrivenGameEngine.Media.Services
             _inProgressTaskCancellationTokenSources.Clear();
             _inProgressTasks.Clear();
             _loadedImplementationsByReferenceId.Clear();
+            _oldImplementations.Clear();
             _referenceCountsByReferenceId.Clear();
             _referencesByJoinedPaths.Clear();
         }
@@ -112,18 +124,21 @@ namespace DomainDrivenGameEngine.Media.Services
         }
 
         /// <summary>
-        /// Handles processing any loaded media into their final implementations.
+        /// Handles processing any loaded media into their final implementations, as well as cleaning up any unloaded implementations.
         /// </summary>
-        public void ProcessLoadedMedia()
+        /// <returns><c>true</c> if any media was processed.</returns>
+        public bool ProcessMediaImplementations()
         {
+            var mediaImplementationsProcessed = false;
             var finishedReferenceIds = new List<int>();
             foreach (var inProgressTaskKvp in _inProgressTasks)
             {
                 if (inProgressTaskKvp.Value.All(t => t.IsCompleted))
                 {
                     var loadedMedia = inProgressTaskKvp.Value.Select(t => t.GetAwaiter().GetResult()).ToArray();
-                    _loadedImplementationsByReferenceId[inProgressTaskKvp.Key] = ProcessMedia(media: loadedMedia);
+                    _loadedImplementationsByReferenceId[inProgressTaskKvp.Key] = LoadImplementation(media: loadedMedia);
                     finishedReferenceIds.Add(inProgressTaskKvp.Key);
+                    mediaImplementationsProcessed = true;
                 }
             }
 
@@ -131,6 +146,16 @@ namespace DomainDrivenGameEngine.Media.Services
             {
                 _inProgressTasks.Remove(finishedReferenceId);
             }
+
+            foreach (var oldImplementation in _oldImplementations)
+            {
+                UnloadImplementation(oldImplementation);
+                mediaImplementationsProcessed = true;
+            }
+
+            _oldImplementations.Clear();
+
+            return mediaImplementationsProcessed;
         }
 
         /// <summary>
@@ -169,7 +194,6 @@ namespace DomainDrivenGameEngine.Media.Services
                 var extension = Path.GetExtension(path);
                 var source = _mediaSourceServices.FirstOrDefault(mss => mss.IsExtensionSupported(extension));
 
-                // TODO - Add and store cancellation token.
                 tasks.Add(Task.Run(() =>
                 {
                     return source.Load(path);
@@ -194,10 +218,14 @@ namespace DomainDrivenGameEngine.Media.Services
                 throw new ArgumentNullException(nameof(media));
             }
 
-            var reference = new Reference<TMediaType>(new string[] { });
+            var reference = new Reference<TMediaType>();
             _referenceCountsByReferenceId.Add(reference.Id, 1);
 
-            _loadedImplementationsByReferenceId[reference.Id] = ProcessMedia(media);
+            // Load the media as a task so that they can be processed at the same time as every other piece of media.
+            var task = Task.FromResult(media);
+            var tasks = new List<Task<TMediaType>> { task };
+
+            _inProgressTasks.Add(reference.Id, tasks);
 
             return reference;
         }
@@ -235,7 +263,7 @@ namespace DomainDrivenGameEngine.Media.Services
 
                 if (_loadedImplementationsByReferenceId.TryGetValue(reference.Id, out var oldImplementation))
                 {
-                    oldImplementation.Dispose();
+                    _oldImplementations.Add(oldImplementation);
                     _loadedImplementationsByReferenceId.Remove(reference.Id);
                 }
 
@@ -246,10 +274,16 @@ namespace DomainDrivenGameEngine.Media.Services
         }
 
         /// <summary>
-        /// Converts the loaded media into the specific implementation.
+        /// Loads the sourced media into the specific implementation.
         /// </summary>
         /// <param name="media">The loaded media.</param>
         /// <returns>The processed implementation.</returns>
-        protected abstract TMediaImplementation ProcessMedia(params TMediaType[] media);
+        protected abstract TMediaImplementation LoadImplementation(params TMediaType[] media);
+
+        /// <summary>
+        /// Unloads a previously loaded implementation.
+        /// </summary>
+        /// <param name="implementation">The implementation to unload.</param>
+        protected abstract void UnloadImplementation(TMediaImplementation implementation);
     }
 }

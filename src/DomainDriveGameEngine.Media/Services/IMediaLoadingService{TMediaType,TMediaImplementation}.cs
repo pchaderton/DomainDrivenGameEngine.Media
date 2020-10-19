@@ -19,8 +19,9 @@ namespace DomainDrivenGameEngine.Media.Services
         TMediaImplementation GetImplementation(IReference<TMediaType> reference);
 
         /// <summary>
-        /// Handles processing any loaded media into their final implementations.
+        /// Handles processing any loaded media into their final implementations, as well as cleaning up any unloaded implementations.
         /// </summary>
-        void ProcessLoadedMedia();
+        /// <returns><c>true</c> if any media was processed.</returns>
+        bool ProcessMediaImplementations();
     }
 }
