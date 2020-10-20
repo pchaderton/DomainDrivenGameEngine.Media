@@ -18,6 +18,11 @@ namespace DomainDrivenGameEngine.Media.Services
         where TMediaImplementation : class, IMediaImplementation
     {
         /// <summary>
+        /// Gets the number of paths and/or media this loading service expects to receive when a caller references it.
+        /// </summary>
+        private readonly HashSet<uint> _expectedCountLookup;
+
+        /// <summary>
         /// A lookup of in-progress task cancellation token sources by reference ID.
         /// </summary>
         private readonly IDictionary<int, CancellationTokenSource> _inProgressTaskCancellationTokenSources;
@@ -25,7 +30,7 @@ namespace DomainDrivenGameEngine.Media.Services
         /// <summary>
         /// A lookup of in-progress tasks by reference ID.
         /// </summary>
-        private readonly IDictionary<int, IReadOnlyCollection<Task<TMediaType>>> _inProgressTasks;
+        private readonly IDictionary<int, Task<TMediaType[]>> _inProgressTasks;
 
         /// <summary>
         /// A lookup of loaded implementations by reference ID.
@@ -56,21 +61,18 @@ namespace DomainDrivenGameEngine.Media.Services
         /// Initializes a new instance of the <see cref="BaseMediaLoadingService{TMediaType, TMediaImplementation}"/> class.
         /// </summary>
         /// <param name="mediaSourceServices">The services to use for sourcing referenced media.</param>
-        protected BaseMediaLoadingService(IReadOnlyCollection<IMediaSourceService<TMediaType>> mediaSourceServices)
+        /// <param name="supportedPathCounts">The number of path counts that this service can support loading.</param>
+        protected BaseMediaLoadingService(IReadOnlyCollection<IMediaSourceService<TMediaType>> mediaSourceServices, IReadOnlyCollection<uint> supportedPathCounts = null)
         {
             _mediaSourceServices = mediaSourceServices ?? throw new ArgumentNullException(nameof(mediaSourceServices));
+            _expectedCountLookup = (supportedPathCounts ?? new uint[] { 1 }).ToHashSet();
             _inProgressTaskCancellationTokenSources = new Dictionary<int, CancellationTokenSource>();
-            _inProgressTasks = new Dictionary<int, IReadOnlyCollection<Task<TMediaType>>>();
+            _inProgressTasks = new Dictionary<int, Task<TMediaType[]>>();
             _loadedImplementationsByReferenceId = new Dictionary<int, TMediaImplementation>();
             _oldImplementations = new List<TMediaImplementation>();
             _referenceCountsByReferenceId = new Dictionary<int, int>();
             _referencesByJoinedPaths = new Dictionary<string, Reference<TMediaType>>();
         }
-
-        /// <summary>
-        /// Gets the number of paths this loading service expects to receive when a caller references a piece of media.
-        /// </summary>
-        protected abstract int ExpectedPathCount { get; }
 
         /// <summary>
         /// Disposes this service.
@@ -133,9 +135,9 @@ namespace DomainDrivenGameEngine.Media.Services
             var finishedReferenceIds = new List<int>();
             foreach (var inProgressTaskKvp in _inProgressTasks)
             {
-                if (inProgressTaskKvp.Value.All(t => t.IsCompleted))
+                if (inProgressTaskKvp.Value.IsCompleted)
                 {
-                    var loadedMedia = inProgressTaskKvp.Value.Select(t => t.GetAwaiter().GetResult()).ToArray();
+                    var loadedMedia = inProgressTaskKvp.Value.GetAwaiter().GetResult();
                     _loadedImplementationsByReferenceId[inProgressTaskKvp.Key] = LoadImplementation(media: loadedMedia);
                     finishedReferenceIds.Add(inProgressTaskKvp.Key);
                     mediaImplementationsProcessed = true;
@@ -170,9 +172,9 @@ namespace DomainDrivenGameEngine.Media.Services
                 throw new ArgumentNullException(nameof(paths));
             }
 
-            if (paths.Length == ExpectedPathCount)
+            if (!_expectedCountLookup.Contains((uint)paths.Length))
             {
-                throw new ArgumentException($"Expected {ExpectedPathCount} {nameof(paths)}, but only received {paths.Length}.");
+                throw new ArgumentException($"Attempting to reference an unexpected number of {nameof(paths)}: {paths.Length}.");
             }
 
             var joinedPaths = Reference<TMediaType>.GetJoinedReferencePaths(paths);
@@ -200,8 +202,10 @@ namespace DomainDrivenGameEngine.Media.Services
                 }, cancellationTokenSource.Token));
             }
 
+            var wrapperTask = Task.WhenAll(tasks);
+
             _inProgressTaskCancellationTokenSources.Add(reference.Id, cancellationTokenSource);
-            _inProgressTasks.Add(reference.Id, tasks);
+            _inProgressTasks.Add(reference.Id, wrapperTask);
 
             return reference;
         }
@@ -211,21 +215,25 @@ namespace DomainDrivenGameEngine.Media.Services
         /// </summary>
         /// <param name="media">The media to reference.</param>
         /// <returns>A <see cref="Reference{TMediaType}"/> object which refers to the media.</returns>
-        public IReference<TMediaType> Reference(TMediaType media)
+        public IReference<TMediaType> Reference(params TMediaType[] media)
         {
             if (media == null)
             {
                 throw new ArgumentNullException(nameof(media));
             }
 
+            if (!_expectedCountLookup.Contains((uint)media.Length))
+            {
+                throw new ArgumentException($"Attempting to reference an unexpected number of {nameof(media)}: {media.Length}.");
+            }
+
             var reference = new Reference<TMediaType>();
             _referenceCountsByReferenceId.Add(reference.Id, 1);
 
             // Load the media as a task so that they can be processed at the same time as every other piece of media.
-            var task = Task.FromResult(media);
-            var tasks = new List<Task<TMediaType>> { task };
+            var wrapperTask = Task.FromResult(media);
 
-            _inProgressTasks.Add(reference.Id, tasks);
+            _inProgressTasks.Add(reference.Id, wrapperTask);
 
             return reference;
         }

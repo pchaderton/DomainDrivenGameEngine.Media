@@ -1,4 +1,5 @@
-﻿using DomainDrivenGameEngine.Media.Models;
+﻿using System;
+using DomainDrivenGameEngine.Media.Models;
 
 namespace DomainDrivenGameEngine.Media.Services
 {
@@ -21,7 +22,7 @@ namespace DomainDrivenGameEngine.Media.Services
         /// </summary>
         /// <param name="media">The media to reference.</param>
         /// <returns>A <see cref="IReference{TMediaType}"/> object which refers to the media.</returns>
-        IReference<TMediaType> Reference(TMediaType media);
+        IReference<TMediaType> Reference(params TMediaType[] media);
 
         /// <summary>
         /// Unreferences a previously retrieved reference.  If no references remain, lists the reference to be unloaded.
