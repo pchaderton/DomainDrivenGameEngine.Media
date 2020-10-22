@@ -22,10 +22,10 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         public BasicModelOptions(VertexColor? color = null,
                                  Vector3? offset = null,
                                  IReadOnlyCollection<string> texturePaths = null,
-                                 IReadOnlyCollection<IReference<Texture>> textureReferences = null,
+                                 IReadOnlyCollection<IMediaReference<Texture>> textureReferences = null,
                                  BlendMode defaultBlendMode = BlendMode.None,
                                  IReadOnlyCollection<string> defaultShaderPaths = null,
-                                 IReference<Shader> defaultShaderReference = null)
+                                 IMediaReference<Shader> defaultShaderReference = null)
         {
             Color = color ?? new VertexColor(1.0f, 1.0f, 1.0f, 1.0f);
             Offset = offset ?? Vector3.Zero;
@@ -49,7 +49,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <summary>
         /// Gets the reference to the default shader to use for rendering this basic model.
         /// </summary>
-        public IReference<Shader> DefaultShaderReference { get; }
+        public IMediaReference<Shader> DefaultShaderReference { get; }
 
         /// <summary>
         /// Gets the color to apply to each vertex.
@@ -69,6 +69,6 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <summary>
         /// Gets the references to the textures to use for this basic model.
         /// </summary>
-        public IReadOnlyCollection<IReference<Texture>> TextureReferences { get; }
+        public IReadOnlyCollection<IMediaReference<Texture>> TextureReferences { get; }
     }
 }

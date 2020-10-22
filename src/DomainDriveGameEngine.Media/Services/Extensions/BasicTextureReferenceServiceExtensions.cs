@@ -15,8 +15,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="red">The red value to apply to the texture.</param>
         /// <param name="green">The green value to apply to the texture.</param>
         /// <param name="blue">The blue value to apply to the texture.</param>
-        /// <returns>A <see cref="IReference{Texture}"/> to the generated texture.</returns>
-        public static IReference<Texture> ReferenceSingleColorTexture(this IMediaReferenceService<Texture> textureReferenceService, byte red, byte green, byte blue)
+        /// <returns>A <see cref="IMediaReference{Texture}"/> to the generated texture.</returns>
+        public static IMediaReference<Texture> ReferenceSingleColorTexture(this IMediaReferenceService<Texture> textureReferenceService, byte red, byte green, byte blue)
         {
             if (textureReferenceService == null)
             {
@@ -34,8 +34,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="green">The green value to apply to the texture.</param>
         /// <param name="blue">The blue value to apply to the texture.</param>
         /// <param name="alpha">The alpha value to apply to the texture.</param>
-        /// <returns>A <see cref="IReference{Texture}"/> to the generated texture.</returns>
-        public static IReference<Texture> ReferenceSingleColorTexture(this IMediaReferenceService<Texture> textureReferenceService, byte red, byte green, byte blue, byte alpha)
+        /// <returns>A <see cref="IMediaReference{Texture}"/> to the generated texture.</returns>
+        public static IMediaReference<Texture> ReferenceSingleColorTexture(this IMediaReferenceService<Texture> textureReferenceService, byte red, byte green, byte blue, byte alpha)
         {
             if (textureReferenceService == null)
             {

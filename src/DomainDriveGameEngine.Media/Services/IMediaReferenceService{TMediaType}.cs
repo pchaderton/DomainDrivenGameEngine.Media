@@ -14,20 +14,20 @@ namespace DomainDrivenGameEngine.Media.Services
         /// References a piece of media.  If this is the first time referencing a given piece of media, lists the reference to be loaded.
         /// </summary>
         /// <param name="paths">One or more strings containing the file paths to reference.</param>
-        /// <returns>A <see cref="IReference{TMediaType}"/> object which refers to the media at the specified paths.</returns>
-        IReference<TMediaType> Reference(params string[] paths);
+        /// <returns>A <see cref="IMediaFileReference{TMediaType}"/> object which refers to the media at the specified paths.</returns>
+        IMediaFileReference<TMediaType> Reference(params string[] paths);
 
         /// <summary>
         /// References a provided piece of media and lists it to be loaded.
         /// </summary>
         /// <param name="media">The media to reference.</param>
-        /// <returns>A <see cref="IReference{TMediaType}"/> object which refers to the media.</returns>
-        IReference<TMediaType> Reference(params TMediaType[] media);
+        /// <returns>A <see cref="IMediaReference{TMediaType}"/> object which refers to the media.</returns>
+        IMediaReference<TMediaType> Reference(params TMediaType[] media);
 
         /// <summary>
         /// Unreferences a previously retrieved reference.  If no references remain, lists the reference to be unloaded.
         /// </summary>
-        /// <param name="reference">The <see cref="IReference{TMediaType}"/> to unreference.</param>
-        void Unreference(IReference<TMediaType> reference);
+        /// <param name="reference">The <see cref="IMediaReference{TMediaType}"/> to unreference.</param>
+        void Unreference(IMediaReference<TMediaType> reference);
     }
 }

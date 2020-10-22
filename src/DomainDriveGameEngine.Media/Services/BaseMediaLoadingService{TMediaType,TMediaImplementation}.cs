@@ -55,7 +55,7 @@ namespace DomainDrivenGameEngine.Media.Services
         /// <summary>
         /// A lookup of previously referenced media by their joined paths.
         /// </summary>
-        private readonly IDictionary<string, Reference<TMediaType>> _referencesByJoinedPaths;
+        private readonly IDictionary<string, MediaFileReference<TMediaType>> _referencesByJoinedPaths;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseMediaLoadingService{TMediaType, TMediaImplementation}"/> class.
@@ -71,7 +71,7 @@ namespace DomainDrivenGameEngine.Media.Services
             _loadedImplementationsByReferenceId = new Dictionary<int, TMediaImplementation>();
             _oldImplementations = new List<TMediaImplementation>();
             _referenceCountsByReferenceId = new Dictionary<int, int>();
-            _referencesByJoinedPaths = new Dictionary<string, Reference<TMediaType>>();
+            _referencesByJoinedPaths = new Dictionary<string, MediaFileReference<TMediaType>>();
         }
 
         /// <summary>
@@ -108,9 +108,9 @@ namespace DomainDrivenGameEngine.Media.Services
         /// <summary>
         /// Gets the implementation for the given reference.
         /// </summary>
-        /// <param name="reference">The <see cref="IReference{TMediaType}"/> to get the implementation for.</param>
+        /// <param name="reference">The <see cref="IMediaReference{TMediaType}"/> to get the implementation for.</param>
         /// <returns>The implementation, or null if the implementation is not ready for use yet.</returns>
-        public TMediaImplementation GetImplementation(IReference<TMediaType> reference)
+        public TMediaImplementation GetImplementation(IMediaReference<TMediaType> reference)
         {
             if (reference == null)
             {
@@ -164,8 +164,8 @@ namespace DomainDrivenGameEngine.Media.Services
         /// References a piece of media.  If this is the first time referencing a given piece of media, lists the reference to be loaded.
         /// </summary>
         /// <param name="paths">One or more strings containing the file paths to reference.</param>
-        /// <returns>A <see cref="Reference{TMediaType}"/> object which refers to the media at the specified paths.</returns>
-        public IReference<TMediaType> Reference(params string[] paths)
+        /// <returns>A <see cref="IMediaFileReference{TMediaType}"/> object which refers to the media at the specified paths.</returns>
+        public IMediaFileReference<TMediaType> Reference(params string[] paths)
         {
             if (paths == null)
             {
@@ -177,14 +177,14 @@ namespace DomainDrivenGameEngine.Media.Services
                 throw new ArgumentException($"Attempting to reference an unexpected number of {nameof(paths)}: {paths.Length}.");
             }
 
-            var joinedPaths = Reference<TMediaType>.GetJoinedReferencePaths(paths);
+            var joinedPaths = MediaFileReference<TMediaType>.GetJoinedReferencePaths(paths);
             if (_referencesByJoinedPaths.TryGetValue(joinedPaths, out var existingReference))
             {
                 _referenceCountsByReferenceId[existingReference.Id]++;
                 return existingReference;
             }
 
-            var reference = new Reference<TMediaType>(paths);
+            var reference = new MediaFileReference<TMediaType>(paths);
             _referencesByJoinedPaths.Add(joinedPaths, reference);
             _referenceCountsByReferenceId.Add(reference.Id, 1);
 
@@ -214,8 +214,8 @@ namespace DomainDrivenGameEngine.Media.Services
         /// References a provided piece of media and lists it to be loaded.
         /// </summary>
         /// <param name="media">The media to reference.</param>
-        /// <returns>A <see cref="Reference{TMediaType}"/> object which refers to the media.</returns>
-        public IReference<TMediaType> Reference(params TMediaType[] media)
+        /// <returns>A <see cref="IMediaReference{TMediaType}"/> object which refers to the media.</returns>
+        public IMediaReference<TMediaType> Reference(params TMediaType[] media)
         {
             if (media == null)
             {
@@ -227,7 +227,7 @@ namespace DomainDrivenGameEngine.Media.Services
                 throw new ArgumentException($"Attempting to reference an unexpected number of {nameof(media)}: {media.Length}.");
             }
 
-            var reference = new Reference<TMediaType>();
+            var reference = new MediaReference<TMediaType>();
             _referenceCountsByReferenceId.Add(reference.Id, 1);
 
             // Load the media as a task so that they can be processed at the same time as every other piece of media.
@@ -241,8 +241,8 @@ namespace DomainDrivenGameEngine.Media.Services
         /// <summary>
         /// Unreferences a previously retrieved reference.  If no references remain, lists the reference to be unloaded.
         /// </summary>
-        /// <param name="reference">The <see cref="Reference{TMediaType}"/> to unreference.</param>
-        public void Unreference(IReference<TMediaType> reference)
+        /// <param name="reference">The <see cref="IMediaReference{TMediaType}"/> to unreference.</param>
+        public void Unreference(IMediaReference<TMediaType> reference)
         {
             if (reference == null)
             {
@@ -257,7 +257,12 @@ namespace DomainDrivenGameEngine.Media.Services
             var newReferenceCount = currentReferenceCount - 1;
             if (newReferenceCount == 0)
             {
-                _referencesByJoinedPaths.Remove(reference.GetJoinedPaths());
+                var fileReference = reference as IMediaFileReference<TMediaType>;
+                if (fileReference != null)
+                {
+                    _referencesByJoinedPaths.Remove(fileReference.GetJoinedPaths());
+                }
+
                 _referenceCountsByReferenceId.Remove(reference.Id);
 
                 if (_inProgressTasks.TryGetValue(reference.Id, out var inProgressTasks) &&

@@ -23,8 +23,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="radius">The radius of the circle.</param>
         /// <param name="segments">The number of segments to divide the circle into.</param>
         /// <param name="options">The common <see cref="BasicModelOptions"/> to use for generating the model.</param>
-        /// <returns>A <see cref="IReference{Model}"/> to the generated model.</returns>
-        public static IReference<Model> ReferenceCircle(this IMediaReferenceService<Model> modelReferenceService,
+        /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
+        public static IMediaReference<Model> ReferenceCircle(this IMediaReferenceService<Model> modelReferenceService,
                                                         float radius = 1.0f,
                                                         uint segments = 16,
                                                         BasicModelOptions? options = null)
@@ -110,8 +110,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="angle">The angle of the fan.</param>
         /// <param name="segments">The number of segments to divide the fan into.</param>
         /// <param name="options">The common <see cref="BasicModelOptions"/> to use for generating the model.</param>
-        /// <returns>A <see cref="IReference{Model}"/> to the generated model.</returns>
-        public static IReference<Model> ReferenceFan(this IMediaReferenceService<Model> modelReferenceService,
+        /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
+        public static IMediaReference<Model> ReferenceFan(this IMediaReferenceService<Model> modelReferenceService,
                                                      float radius = 1.0f,
                                                      float angle = MathF.PI / 2.0f,
                                                      uint segments = 16,
@@ -208,8 +208,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="width">The width of the plane.</param>
         /// <param name="height">The height of the plane.</param>
         /// <param name="options">The common <see cref="BasicModelOptions"/> to use for generating the model.</param>
-        /// <returns>A <see cref="IReference{Model}"/> to the generated model.</returns>
-        public static IReference<Model> ReferenceSingleSidedPlane(this IMediaReferenceService<Model> modelReferenceService,
+        /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
+        public static IMediaReference<Model> ReferenceSingleSidedPlane(this IMediaReferenceService<Model> modelReferenceService,
                                                                   float width = 1.0f,
                                                                   float height = 1.0f,
                                                                   BasicModelOptions? options = null)
@@ -261,8 +261,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="width">The width of the plane.</param>
         /// <param name="height">The height of the plane.</param>
         /// <param name="options">The common <see cref="BasicModelOptions"/> to use for generating the model.</param>
-        /// <returns>A <see cref="IReference{Model}"/> to the generated model.</returns>
-        public static IReference<Model> ReferenceDoubleSidedPlane(this IMediaReferenceService<Model> modelReferenceService,
+        /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
+        public static IMediaReference<Model> ReferenceDoubleSidedPlane(this IMediaReferenceService<Model> modelReferenceService,
                                                                   float width = 1.0f,
                                                                   float height = 1.0f,
                                                                   BasicModelOptions? options = null)
@@ -316,8 +316,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="height">The height of the cube.</param>
         /// <param name="depth">The depth of the cube.</param>
         /// <param name="options">The common <see cref="BasicModelOptions"/> to use for generating the model.</param>
-        /// <returns>A <see cref="IReference{Model}"/> to the generated model.</returns>
-        public static IReference<Model> ReferenceCube(this IMediaReferenceService<Model> modelReferenceService,
+        /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
+        public static IMediaReference<Model> ReferenceCube(this IMediaReferenceService<Model> modelReferenceService,
                                                       float width = 1.0f,
                                                       float height = 1.0f,
                                                       float depth = 1.0f,
@@ -390,8 +390,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="modelReferenceService">The <see cref="IMediaReferenceService{Model}"/> to reference the model with.</param>
         /// <param name="size">The dimensions of the cube.</param>
         /// <param name="options">The common <see cref="BasicModelOptions"/> to use for generating the model.</param>
-        /// <returns>A <see cref="IReference{Model}"/> to the generated model.</returns>
-        public static IReference<Model> ReferenceCube(this IMediaReferenceService<Model> modelReferenceService,
+        /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
+        public static IMediaReference<Model> ReferenceCube(this IMediaReferenceService<Model> modelReferenceService,
                                                       float size = 1.0f,
                                                       BasicModelOptions? options = null)
         {
@@ -415,8 +415,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="radius">The radius of the sphere.</param>
         /// <param name="segments">The number of segments to divide the sphere into.</param>
         /// <param name="options">The common <see cref="BasicModelOptions"/> to use for generating the model.</param>
-        /// <returns>A <see cref="IReference{Model}"/> to the generated model.</returns>
-        public static IReference<Model> ReferenceSphere(this IMediaReferenceService<Model> modelReferenceService,
+        /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
+        public static IMediaReference<Model> ReferenceSphere(this IMediaReferenceService<Model> modelReferenceService,
                                                         float radius = 1.0f,
                                                         uint segments = 8,
                                                         BasicModelOptions? options = null)
@@ -515,8 +515,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="height">The height of the cylinder.</param>
         /// <param name="segments">The number of segments to divide the cylinder into.</param>
         /// <param name="options">The common <see cref="BasicModelOptions"/> to use for generating the model.</param>
-        /// <returns>A <see cref="IReference{Model}"/> to the generated model.</returns>
-        public static IReference<Model> ReferenceCylinder(this IMediaReferenceService<Model> modelReferenceService,
+        /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
+        public static IMediaReference<Model> ReferenceCylinder(this IMediaReferenceService<Model> modelReferenceService,
                                                           float radius = 1.0f,
                                                           float height = 1.0f,
                                                           uint segments = 8,
@@ -647,8 +647,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="height">The height of the cone.</param>
         /// <param name="segments">The number of segments to divide the cone into.</param>
         /// <param name="options">The common <see cref="BasicModelOptions"/> to use for generating the model.</param>
-        /// <returns>A <see cref="IReference{Model}"/> to the generated model.</returns>
-        public static IReference<Model> CreateCone(this IMediaReferenceService<Model> modelReferenceService,
+        /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
+        public static IMediaReference<Model> CreateCone(this IMediaReferenceService<Model> modelReferenceService,
                                                    float radius = 1.0f,
                                                    float height = 1.0f,
                                                    uint segments = 8,

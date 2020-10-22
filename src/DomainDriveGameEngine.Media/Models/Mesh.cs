@@ -21,10 +21,10 @@ namespace DomainDrivenGameEngine.Media.Models
         public Mesh(IReadOnlyCollection<Vertex> vertices,
                     IReadOnlyCollection<uint> indices,
                     IReadOnlyCollection<string> texturePaths = null,
-                    IReadOnlyCollection<IReference<Texture>> textureReferences = null,
+                    IReadOnlyCollection<IMediaReference<Texture>> textureReferences = null,
                     BlendMode defaultBlendMode = BlendMode.None,
                     IReadOnlyCollection<string> defaultShaderPaths = null,
-                    IReference<Shader> defaultShaderReference = null)
+                    IMediaReference<Shader> defaultShaderReference = null)
         {
             Vertices = vertices ?? throw new ArgumentNullException(nameof(vertices));
             Indices = indices ?? throw new ArgumentNullException(nameof(indices));
@@ -55,7 +55,7 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <summary>
         /// Gets the reference to the default shader to use for rendering this mesh.
         /// </summary>
-        public IReference<Shader> DefaultShaderReference { get; }
+        public IMediaReference<Shader> DefaultShaderReference { get; }
 
         /// <summary>
         /// Gets the indices of the vertices for each triangle in the mesh.
@@ -70,7 +70,7 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <summary>
         /// Gets the references to any textures for the mesh.
         /// </summary>
-        public IReadOnlyCollection<IReference<Texture>> TextureReferences { get; }
+        public IReadOnlyCollection<IMediaReference<Texture>> TextureReferences { get; }
 
         /// <summary>
         /// Gets the vertices of the mesh.

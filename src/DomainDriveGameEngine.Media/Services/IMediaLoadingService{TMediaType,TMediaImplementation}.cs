@@ -14,9 +14,9 @@ namespace DomainDrivenGameEngine.Media.Services
         /// <summary>
         /// Gets the implementation for the given reference.
         /// </summary>
-        /// <param name="reference">The <see cref="IReference{TMediaType}"/> to get the implementation for.</param>
+        /// <param name="reference">The <see cref="IMediaReference{TMediaType}"/> to get the implementation for.</param>
         /// <returns>The implementation, or null if the implementation is not ready for use yet.</returns>
-        TMediaImplementation GetImplementation(IReference<TMediaType> reference);
+        TMediaImplementation GetImplementation(IMediaReference<TMediaType> reference);
 
         /// <summary>
         /// Handles processing any loaded media into their final implementations, as well as cleaning up any unloaded implementations.
