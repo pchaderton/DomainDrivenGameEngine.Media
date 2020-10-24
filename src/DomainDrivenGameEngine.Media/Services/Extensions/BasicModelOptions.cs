@@ -18,14 +18,14 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="textureReferences">The references to the textures to use for this basic model.</param>
         /// <param name="defaultBlendMode">The default blend mode to use for this basic model.</param>
         /// <param name="defaultShaderPaths">The paths to use for generating the default shader to use for rendering this basic model.</param>
-        /// <param name="defaultShaderReference">The reference to the default shader to use for rendering this basic model.</param>
+        /// <param name="defaultShaderReferences">The references to the default shaders to use for rendering this basic model.</param>
         public BasicModelOptions(VertexColor? color = null,
                                  Vector3? offset = null,
                                  IReadOnlyCollection<string> texturePaths = null,
                                  IReadOnlyCollection<IMediaReference<Texture>> textureReferences = null,
                                  BlendMode defaultBlendMode = BlendMode.None,
                                  IReadOnlyCollection<string> defaultShaderPaths = null,
-                                 IMediaReference<Shader> defaultShaderReference = null)
+                                 IReadOnlyCollection<IMediaReference<Shader>> defaultShaderReferences = null)
         {
             Color = color ?? new VertexColor(1.0f, 1.0f, 1.0f, 1.0f);
             Offset = offset ?? Vector3.Zero;
@@ -33,7 +33,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
             TextureReferences = textureReferences;
             DefaultBlendMode = defaultBlendMode;
             DefaultShaderPaths = defaultShaderPaths;
-            DefaultShaderReference = defaultShaderReference;
+            DefaultShaderReferences = defaultShaderReferences;
         }
 
         /// <summary>
@@ -47,9 +47,9 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         public IReadOnlyCollection<string> DefaultShaderPaths { get; }
 
         /// <summary>
-        /// Gets the reference to the default shader to use for rendering this basic model.
+        /// Gets the references to the default shader to use for rendering this basic model.
         /// </summary>
-        public IMediaReference<Shader> DefaultShaderReference { get; }
+        public IReadOnlyCollection<IMediaReference<Shader>> DefaultShaderReferences { get; }
 
         /// <summary>
         /// Gets the color to apply to each vertex.

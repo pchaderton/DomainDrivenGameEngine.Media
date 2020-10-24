@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace DomainDrivenGameEngine.Media.Models
 {
@@ -11,15 +10,15 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="Shader"/> class.
         /// </summary>
-        /// <param name="sources">The sources needed to compile the shader.</param>
-        public Shader(IReadOnlyCollection<string> sources)
+        /// <param name="source">The source needed to compile the shader.</param>
+        public Shader(string source)
         {
-            Sources = sources ?? throw new ArgumentNullException(nameof(sources));
+            Source = source ?? throw new ArgumentNullException(nameof(source));
         }
 
         /// <summary>
         /// Gets the sources needed to compile the shader.
         /// </summary>
-        public IReadOnlyCollection<string> Sources { get; }
+        public string Source { get; }
     }
 }
