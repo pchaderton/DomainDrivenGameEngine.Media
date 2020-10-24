@@ -17,14 +17,14 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <param name="textureReferences">Paths to any texture references for the mesh.  If this and texturePaths are provided, both must have the same number of elements.</param>
         /// <param name="defaultBlendMode">The default blend mode to use when rendering this mesh.</param>
         /// <param name="defaultShaderPaths">The paths to use for the default shader to use for rendering this mesh.</param>
-        /// <param name="defaultShaderReferences">The references to the default shaders to use for rendering this mesh.</param>
+        /// <param name="defaultShaderReference">The reference to the default shader to use for rendering this mesh.</param>
         public Mesh(IReadOnlyCollection<Vertex> vertices,
                     IReadOnlyCollection<uint> indices,
                     IReadOnlyCollection<string> texturePaths = null,
                     IReadOnlyCollection<IMediaReference<Texture>> textureReferences = null,
                     BlendMode defaultBlendMode = BlendMode.None,
                     IReadOnlyCollection<string> defaultShaderPaths = null,
-                    IReadOnlyCollection<IMediaReference<Shader>> defaultShaderReferences = null)
+                    IMediaReference<Shader> defaultShaderReference = null)
         {
             Vertices = vertices ?? throw new ArgumentNullException(nameof(vertices));
             Indices = indices ?? throw new ArgumentNullException(nameof(indices));
@@ -39,7 +39,7 @@ namespace DomainDrivenGameEngine.Media.Models
 
             DefaultBlendMode = defaultBlendMode;
             DefaultShaderPaths = defaultShaderPaths;
-            DefaultShaderReferences = defaultShaderReferences;
+            DefaultShaderReference = defaultShaderReference;
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <summary>
         /// Gets the reference to the default shader to use for rendering this mesh.
         /// </summary>
-        public IReadOnlyCollection<IMediaReference<Shader>> DefaultShaderReferences { get; }
+        public IMediaReference<Shader> DefaultShaderReference { get; }
 
         /// <summary>
         /// Gets the indices of the vertices for each triangle in the mesh.

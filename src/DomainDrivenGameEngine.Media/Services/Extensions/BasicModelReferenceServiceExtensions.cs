@@ -96,7 +96,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
                          options?.TextureReferences,
                          options?.DefaultBlendMode ?? BlendMode.None,
                          options?.DefaultShaderPaths,
-                         options?.DefaultShaderReferences),
+                         options?.DefaultShaderReference),
             };
 
             return modelReferenceService.Reference(new Model(meshes));
@@ -195,7 +195,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
                          options?.TextureReferences,
                          options?.DefaultBlendMode ?? BlendMode.None,
                          options?.DefaultShaderPaths,
-                         options?.DefaultShaderReferences),
+                         options?.DefaultShaderReference),
             };
 
             return modelReferenceService.Reference(new Model(meshes));
@@ -248,7 +248,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
                          options?.TextureReferences,
                          options?.DefaultBlendMode ?? BlendMode.None,
                          options?.DefaultShaderPaths,
-                         options?.DefaultShaderReferences),
+                         options?.DefaultShaderReference),
             };
 
             return modelReferenceService.Reference(new Model(meshes));
@@ -302,7 +302,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
                          options?.TextureReferences,
                          options?.DefaultBlendMode ?? BlendMode.None,
                          options?.DefaultShaderPaths,
-                         options?.DefaultShaderReferences),
+                         options?.DefaultShaderReference),
             };
 
             return modelReferenceService.Reference(new Model(meshes));
@@ -378,7 +378,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
                          options?.TextureReferences,
                          options?.DefaultBlendMode ?? BlendMode.None,
                          options?.DefaultShaderPaths,
-                         options?.DefaultShaderReferences),
+                         options?.DefaultShaderReference),
             };
 
             return modelReferenceService.Reference(new Model(meshes));
@@ -501,7 +501,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
                          options?.TextureReferences,
                          options?.DefaultBlendMode ?? BlendMode.None,
                          options?.DefaultShaderPaths,
-                         options?.DefaultShaderReferences),
+                         options?.DefaultShaderReference),
             };
 
             return modelReferenceService.Reference(new Model(meshes));
@@ -633,7 +633,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
                          options?.TextureReferences,
                          options?.DefaultBlendMode ?? BlendMode.None,
                          options?.DefaultShaderPaths,
-                         options?.DefaultShaderReferences),
+                         options?.DefaultShaderReference),
             };
 
             return modelReferenceService.Reference(new Model(meshes));
@@ -755,7 +755,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
                          options?.TextureReferences,
                          options?.DefaultBlendMode ?? BlendMode.None,
                          options?.DefaultShaderPaths,
-                         options?.DefaultShaderReferences),
+                         options?.DefaultShaderReference),
             };
 
             return modelReferenceService.Reference(new Model(meshes));
