@@ -25,9 +25,9 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="options">The common <see cref="BasicModelOptions"/> to use for generating the model.</param>
         /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
         public static IMediaReference<Model> ReferenceCircle(this IMediaReferenceService<Model> modelReferenceService,
-                                                        float radius = 1.0f,
-                                                        uint segments = 16,
-                                                        BasicModelOptions? options = null)
+                                                             float radius = 1.0f,
+                                                             uint segments = 16,
+                                                             BasicModelOptions? options = null)
         {
             if (modelReferenceService == null)
             {
@@ -112,10 +112,10 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="options">The common <see cref="BasicModelOptions"/> to use for generating the model.</param>
         /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
         public static IMediaReference<Model> ReferenceFan(this IMediaReferenceService<Model> modelReferenceService,
-                                                     float radius = 1.0f,
-                                                     float angle = MathF.PI / 2.0f,
-                                                     uint segments = 16,
-                                                     BasicModelOptions? options = null)
+                                                          float radius = 1.0f,
+                                                          float angle = MathF.PI / 2.0f,
+                                                          uint segments = 16,
+                                                          BasicModelOptions? options = null)
         {
             if (modelReferenceService == null)
             {
@@ -210,9 +210,9 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="options">The common <see cref="BasicModelOptions"/> to use for generating the model.</param>
         /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
         public static IMediaReference<Model> ReferenceSingleSidedPlane(this IMediaReferenceService<Model> modelReferenceService,
-                                                                  float width = 1.0f,
-                                                                  float height = 1.0f,
-                                                                  BasicModelOptions? options = null)
+                                                                       float width = 1.0f,
+                                                                       float height = 1.0f,
+                                                                       BasicModelOptions? options = null)
         {
             if (modelReferenceService == null)
             {
@@ -263,9 +263,9 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="options">The common <see cref="BasicModelOptions"/> to use for generating the model.</param>
         /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
         public static IMediaReference<Model> ReferenceDoubleSidedPlane(this IMediaReferenceService<Model> modelReferenceService,
-                                                                  float width = 1.0f,
-                                                                  float height = 1.0f,
-                                                                  BasicModelOptions? options = null)
+                                                                       float width = 1.0f,
+                                                                       float height = 1.0f,
+                                                                       BasicModelOptions? options = null)
         {
             if (modelReferenceService == null)
             {
@@ -318,10 +318,10 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="options">The common <see cref="BasicModelOptions"/> to use for generating the model.</param>
         /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
         public static IMediaReference<Model> ReferenceCube(this IMediaReferenceService<Model> modelReferenceService,
-                                                      float width = 1.0f,
-                                                      float height = 1.0f,
-                                                      float depth = 1.0f,
-                                                      BasicModelOptions? options = null)
+                                                           float width = 1.0f,
+                                                           float height = 1.0f,
+                                                           float depth = 1.0f,
+                                                           BasicModelOptions? options = null)
         {
             if (modelReferenceService == null)
             {
@@ -392,8 +392,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="options">The common <see cref="BasicModelOptions"/> to use for generating the model.</param>
         /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
         public static IMediaReference<Model> ReferenceCube(this IMediaReferenceService<Model> modelReferenceService,
-                                                      float size = 1.0f,
-                                                      BasicModelOptions? options = null)
+                                                           float size = 1.0f,
+                                                           BasicModelOptions? options = null)
         {
             if (modelReferenceService == null)
             {
@@ -417,9 +417,9 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="options">The common <see cref="BasicModelOptions"/> to use for generating the model.</param>
         /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
         public static IMediaReference<Model> ReferenceSphere(this IMediaReferenceService<Model> modelReferenceService,
-                                                        float radius = 1.0f,
-                                                        uint segments = 8,
-                                                        BasicModelOptions? options = null)
+                                                             float radius = 1.0f,
+                                                             uint segments = 8,
+                                                             BasicModelOptions? options = null)
         {
             if (modelReferenceService == null)
             {
@@ -517,10 +517,10 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="options">The common <see cref="BasicModelOptions"/> to use for generating the model.</param>
         /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
         public static IMediaReference<Model> ReferenceCylinder(this IMediaReferenceService<Model> modelReferenceService,
-                                                          float radius = 1.0f,
-                                                          float height = 1.0f,
-                                                          uint segments = 8,
-                                                          BasicModelOptions? options = null)
+                                                               float radius = 1.0f,
+                                                               float height = 1.0f,
+                                                               uint segments = 8,
+                                                               BasicModelOptions? options = null)
         {
             if (modelReferenceService == null)
             {
@@ -648,11 +648,11 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="segments">The number of segments to divide the cone into.</param>
         /// <param name="options">The common <see cref="BasicModelOptions"/> to use for generating the model.</param>
         /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
-        public static IMediaReference<Model> CreateCone(this IMediaReferenceService<Model> modelReferenceService,
-                                                   float radius = 1.0f,
-                                                   float height = 1.0f,
-                                                   uint segments = 8,
-                                                   BasicModelOptions? options = null)
+        public static IMediaReference<Model> ReferenceCone(this IMediaReferenceService<Model> modelReferenceService,
+                                                           float radius = 1.0f,
+                                                           float height = 1.0f,
+                                                           uint segments = 8,
+                                                           BasicModelOptions? options = null)
         {
             if (modelReferenceService == null)
             {
