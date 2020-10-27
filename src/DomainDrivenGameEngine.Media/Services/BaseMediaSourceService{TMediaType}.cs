@@ -6,7 +6,7 @@ using DomainDrivenGameEngine.Media.Models;
 namespace DomainDrivenGameEngine.Media.Services
 {
     /// <summary>
-    /// A base service for sourcing media, loading a media domain model using a given implementation.
+    /// A base service for sourcing media, loading it into a domain media model.
     /// </summary>
     /// <typeparam name="TMediaType">The type of media this service loads.</typeparam>
     public abstract class BaseMediaSourceService<TMediaType> : IMediaSourceService<TMediaType>
