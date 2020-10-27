@@ -8,6 +8,11 @@ namespace DomainDrivenGameEngine.Media.Services
     /// <summary>
     /// A base service for sourcing media through a <see cref="Stream"/> object, loading it into a domain media model.
     /// </summary>
+    /// <remarks>
+    /// If the isDisposeAfterLoadEnabled constructor parameter is set to false, it is up to either the source or the
+    /// implementation to handle disposing of the loaded file stream (unless an exception is thrown, at which point
+    /// the stream will be disposed of automatically).
+    /// </remarks>
     /// <typeparam name="TMediaType">The type of media this service loads.</typeparam>
     public abstract class BaseStreamMediaSourceService<TMediaType> : BaseMediaSourceService<TMediaType>
         where TMediaType : class, IMedia
@@ -18,22 +23,49 @@ namespace DomainDrivenGameEngine.Media.Services
         private readonly IFileStreamService _fileStreamService;
 
         /// <summary>
+        /// A flag which defines if disposing of a file stream after loading is enabled or not.
+        /// </summary>
+        private readonly bool _isDisposeAfterLoadEnabled;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="BaseStreamMediaSourceService{TMediaType}"/> class.
         /// </summary>
         /// <param name="extensions">The extensions supported by this source service.</param>
         /// <param name="fileStreamService">The service to use for reading file streams.</param>
-        protected BaseStreamMediaSourceService(IReadOnlyCollection<string> extensions, IFileStreamService fileStreamService)
+        /// <param name="isDisposeAfterLoadEnabled">Defaults to true.  If true, disposes of the file stream after a load is finished.</param>
+        protected BaseStreamMediaSourceService(IReadOnlyCollection<string> extensions,
+                                               IFileStreamService fileStreamService,
+                                               bool isDisposeAfterLoadEnabled = true)
             : base(extensions)
         {
             _fileStreamService = fileStreamService ?? throw new ArgumentNullException(nameof(fileStreamService));
+            _isDisposeAfterLoadEnabled = isDisposeAfterLoadEnabled;
         }
 
         /// <inheritdoc/>
         public override TMediaType Load(string path)
         {
-            using (var stream = _fileStreamService.OpenFileStream(path))
+            if (_isDisposeAfterLoadEnabled)
             {
-                return Load(stream, path);
+                // Automatically dispose of the stream after loading is complete.
+                using (var stream = _fileStreamService.OpenFileStream(path))
+                {
+                    return Load(stream, path);
+                }
+            }
+            else
+            {
+                // Don't dispose of the stream here unless an exception is thrown by the implemented load method.
+                var stream = _fileStreamService.OpenFileStream(path);
+                try
+                {
+                    return Load(stream, path);
+                }
+                catch
+                {
+                    stream.Dispose();
+                    throw;
+                }
             }
         }
 
