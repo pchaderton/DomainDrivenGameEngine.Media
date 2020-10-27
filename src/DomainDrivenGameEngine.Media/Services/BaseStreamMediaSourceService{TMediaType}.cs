@@ -33,7 +33,7 @@ namespace DomainDrivenGameEngine.Media.Services
         {
             using (var stream = _fileStreamService.OpenFileStream(path))
             {
-                return Load(stream);
+                return Load(stream, path);
             }
         }
 
@@ -41,7 +41,8 @@ namespace DomainDrivenGameEngine.Media.Services
         /// Loads a given piece of media from the specified <see cref="Stream"/>.
         /// </summary>
         /// <param name="stream">The <see cref="Stream"/> to load media from.</param>
+        /// <param name="path">The path used to generate the <see cref="Stream"/>.</param>
         /// <returns>The loaded media object.</returns>
-        public abstract TMediaType Load(Stream stream);
+        public abstract TMediaType Load(Stream stream, string path);
     }
 }
