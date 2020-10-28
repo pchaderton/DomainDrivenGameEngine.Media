@@ -18,13 +18,15 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <param name="defaultBlendMode">The default blend mode to use when rendering this mesh.</param>
         /// <param name="defaultShaderPaths">The paths to use for the default shader to use for rendering this mesh.</param>
         /// <param name="defaultShaderReference">The reference to the default shader to use for rendering this mesh.</param>
+        /// <param name="embeddedTextureIndices">The indices of the embedded textures this mesh refers to.</param>
         public Mesh(IReadOnlyCollection<Vertex> vertices,
                     IReadOnlyCollection<uint> indices,
                     IReadOnlyCollection<string> texturePaths = null,
                     IReadOnlyCollection<IMediaReference<Texture>> textureReferences = null,
                     BlendMode defaultBlendMode = BlendMode.None,
                     IReadOnlyCollection<string> defaultShaderPaths = null,
-                    IMediaReference<Shader> defaultShaderReference = null)
+                    IMediaReference<Shader> defaultShaderReference = null,
+                    IReadOnlyCollection<uint?> embeddedTextureIndices = null)
         {
             Vertices = vertices ?? throw new ArgumentNullException(nameof(vertices));
             Indices = indices ?? throw new ArgumentNullException(nameof(indices));
@@ -40,6 +42,7 @@ namespace DomainDrivenGameEngine.Media.Models
             DefaultBlendMode = defaultBlendMode;
             DefaultShaderPaths = defaultShaderPaths;
             DefaultShaderReference = defaultShaderReference;
+            EmbeddedTextureIndices = embeddedTextureIndices;
         }
 
         /// <summary>
@@ -56,6 +59,11 @@ namespace DomainDrivenGameEngine.Media.Models
         /// Gets the reference to the default shader to use for rendering this mesh.
         /// </summary>
         public IMediaReference<Shader> DefaultShaderReference { get; }
+
+        /// <summary>
+        /// Gets the indexes of the embedded textures this mesh refers to.
+        /// </summary>
+        public IReadOnlyCollection<uint?> EmbeddedTextureIndices { get; }
 
         /// <summary>
         /// Gets the indices of the vertices for each triangle in the mesh.
