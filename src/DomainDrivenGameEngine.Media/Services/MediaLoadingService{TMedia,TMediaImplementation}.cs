@@ -67,9 +67,9 @@ namespace DomainDrivenGameEngine.Media.Services
         /// <param name="mediaSourceServices">The services to use for sourcing referenced media.</param>
         /// <param name="mediaImplementationService">The service which generates the final implementation of loaded media.</param>
         /// <param name="fileAccessService">The service to use for accessing files.</param>
-        protected MediaLoadingService(IReadOnlyCollection<IMediaSourceService<TMedia>> mediaSourceServices,
-                                      IMediaImplementationService<TMedia, TMediaImplementation> mediaImplementationService,
-                                      IFileAccessService fileAccessService)
+        public MediaLoadingService(IMediaSourceService<TMedia>[] mediaSourceServices,
+                                   IMediaImplementationService<TMedia, TMediaImplementation> mediaImplementationService,
+                                   IFileAccessService fileAccessService)
         {
             _mediaSourceServices = mediaSourceServices ?? throw new ArgumentNullException(nameof(mediaSourceServices));
             _mediaImplementationService = mediaImplementationService ?? throw new ArgumentNullException(nameof(mediaImplementationService));

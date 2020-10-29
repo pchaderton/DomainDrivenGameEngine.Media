@@ -16,7 +16,7 @@ namespace DomainDrivenGameEngine.Media.Models
         public Model(IReadOnlyCollection<Mesh> meshes, IReadOnlyCollection<Texture> embeddedTextures = null)
         {
             Meshes = meshes ?? throw new ArgumentNullException(nameof(meshes));
-            EmbeddedTextures = embeddedTextures ?? throw new ArgumentNullException(nameof(embeddedTextures));
+            EmbeddedTextures = embeddedTextures;
         }
 
         /// <summary>
