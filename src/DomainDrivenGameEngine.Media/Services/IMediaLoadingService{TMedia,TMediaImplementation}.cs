@@ -5,18 +5,18 @@ namespace DomainDrivenGameEngine.Media.Services
     /// <summary>
     /// An interface describing a service for loading referenced media for a specific implementation.
     /// </summary>
-    /// <typeparam name="TMediaType">The type of media this service loads into an implementation.</typeparam>
+    /// <typeparam name="TMedia">The type of media this service loads into an implementation.</typeparam>
     /// <typeparam name="TMediaImplementation">The type of implementation that is loaded.</typeparam>
-    public interface IMediaLoadingService<TMediaType, TMediaImplementation> : IMediaReferenceService<TMediaType>
-        where TMediaType : class, IMedia
-        where TMediaImplementation : class, IMediaImplementation
+    public interface IMediaLoadingService<TMedia, TMediaImplementation> : IMediaReferenceService<TMedia>
+        where TMedia : class, IMedia
+        where TMediaImplementation : class, IMediaImplementation<TMedia>
     {
         /// <summary>
         /// Gets the implementation for the given reference.
         /// </summary>
-        /// <param name="reference">The <see cref="IMediaReference{TMediaType}"/> to get the implementation for.</param>
+        /// <param name="reference">The <see cref="IMediaReference{TMedia}"/> to get the implementation for.</param>
         /// <returns>The implementation, or null if the implementation is not ready for use yet.</returns>
-        TMediaImplementation GetImplementation(IMediaReference<TMediaType> reference);
+        TMediaImplementation GetImplementation(IMediaReference<TMedia> reference);
 
         /// <summary>
         /// Handles processing any loaded media into their final implementations, as well as cleaning up any unloaded implementations.

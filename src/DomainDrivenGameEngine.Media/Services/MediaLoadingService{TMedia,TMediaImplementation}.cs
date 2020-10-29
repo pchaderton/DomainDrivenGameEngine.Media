@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,16 +10,21 @@ namespace DomainDrivenGameEngine.Media.Services
     /// <summary>
     /// A service for loading referenced media for a specific implementation.
     /// </summary>
-    /// <typeparam name="TMediaType">The type of media this service loads into an implementation.</typeparam>
+    /// <typeparam name="TMedia">The type of media this service loads into an implementation.</typeparam>
     /// <typeparam name="TMediaImplementation">The type of implementation that is loaded.</typeparam>
-    public abstract class BaseMediaLoadingService<TMediaType, TMediaImplementation> : IMediaLoadingService<TMediaType, TMediaImplementation>, IDisposable
-        where TMediaType : class, IMedia
-        where TMediaImplementation : class, IMediaImplementation
+    public class MediaLoadingService<TMedia, TMediaImplementation> : IMediaLoadingService<TMedia, TMediaImplementation>, IDisposable
+        where TMedia : class, IMedia
+        where TMediaImplementation : class, IMediaImplementation<TMedia>
     {
         /// <summary>
-        /// Gets the number of paths and/or media this loading service expects to receive when a caller references it.
+        /// A lookup to the number of paths and/or media this loading service expects to receive when a caller references it.
         /// </summary>
         private readonly HashSet<uint> _expectedCountLookup;
+
+        /// <summary>
+        /// The service to use for accessing files.
+        /// </summary>
+        private readonly IFileAccessService _fileAccessService;
 
         /// <summary>
         /// A lookup of in-progress task cancellation token sources by reference ID.
@@ -28,9 +32,9 @@ namespace DomainDrivenGameEngine.Media.Services
         private readonly IDictionary<int, CancellationTokenSource> _inProgressTaskCancellationTokenSources;
 
         /// <summary>
-        /// A lookup of in-progress tasks by reference ID.
+        /// A lookup of in-progress tasks by reference ID, where each task is expected to return a KVP containing the path and media.
         /// </summary>
-        private readonly IDictionary<int, Task<TMediaType[]>> _inProgressTasks;
+        private readonly IDictionary<int, Task<KeyValuePair<string, TMedia>[]>> _inProgressTasks;
 
         /// <summary>
         /// A lookup of loaded implementations by reference ID.
@@ -38,9 +42,14 @@ namespace DomainDrivenGameEngine.Media.Services
         private readonly IDictionary<int, TMediaImplementation> _loadedImplementationsByReferenceId;
 
         /// <summary>
+        /// The service which generates the final implementation of loaded media.
+        /// </summary>
+        private readonly IMediaImplementationService<TMedia, TMediaImplementation> _mediaImplementationService;
+
+        /// <summary>
         /// The services to use for sourcing referenced media.
         /// </summary>
-        private readonly IReadOnlyCollection<IMediaSourceService<TMediaType>> _mediaSourceServices;
+        private readonly IReadOnlyCollection<IMediaSourceService<TMedia>> _mediaSourceServices;
 
         /// <summary>
         /// Implementations that are no longer referenced and need to be unloaded.
@@ -55,23 +64,30 @@ namespace DomainDrivenGameEngine.Media.Services
         /// <summary>
         /// A lookup of previously referenced media by their joined paths.
         /// </summary>
-        private readonly IDictionary<string, MediaFileReference<TMediaType>> _referencesByJoinedPaths;
+        private readonly IDictionary<string, MediaFileReference<TMedia>> _referencesByJoinedPaths;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseMediaLoadingService{TMediaType, TMediaImplementation}"/> class.
+        /// Initializes a new instance of the <see cref="MediaLoadingService{TMedia, TMediaImplementation}"/> class.
         /// </summary>
         /// <param name="mediaSourceServices">The services to use for sourcing referenced media.</param>
-        /// <param name="supportedPathCounts">The number of path counts that this service can support loading.</param>
-        protected BaseMediaLoadingService(IReadOnlyCollection<IMediaSourceService<TMediaType>> mediaSourceServices, IReadOnlyCollection<uint> supportedPathCounts = null)
+        /// <param name="mediaImplementationService">The service which generates the final implementation of loaded media.</param>
+        /// <param name="fileAccessService">The service to use for accessing files.</param>
+        /// <param name="supportedPathCounts">The number of path counts that this service can support loading.  Defaults to 1.</param>
+        protected MediaLoadingService(IReadOnlyCollection<IMediaSourceService<TMedia>> mediaSourceServices,
+                                      IMediaImplementationService<TMedia, TMediaImplementation> mediaImplementationService,
+                                      IFileAccessService fileAccessService,
+                                      IReadOnlyCollection<uint> supportedPathCounts = null)
         {
             _mediaSourceServices = mediaSourceServices ?? throw new ArgumentNullException(nameof(mediaSourceServices));
+            _mediaImplementationService = mediaImplementationService ?? throw new ArgumentNullException(nameof(mediaImplementationService));
+            _fileAccessService = fileAccessService ?? throw new ArgumentNullException(nameof(fileAccessService));
             _expectedCountLookup = (supportedPathCounts ?? new uint[] { 1 }).ToHashSet();
             _inProgressTaskCancellationTokenSources = new Dictionary<int, CancellationTokenSource>();
-            _inProgressTasks = new Dictionary<int, Task<TMediaType[]>>();
+            _inProgressTasks = new Dictionary<int, Task<KeyValuePair<string, TMedia>[]>>();
             _loadedImplementationsByReferenceId = new Dictionary<int, TMediaImplementation>();
             _oldImplementations = new List<TMediaImplementation>();
             _referenceCountsByReferenceId = new Dictionary<int, int>();
-            _referencesByJoinedPaths = new Dictionary<string, MediaFileReference<TMediaType>>();
+            _referencesByJoinedPaths = new Dictionary<string, MediaFileReference<TMedia>>();
         }
 
         /// <summary>
@@ -81,12 +97,12 @@ namespace DomainDrivenGameEngine.Media.Services
         {
             foreach (var oldImplementation in _oldImplementations)
             {
-                UnloadImplementation(oldImplementation);
+                _mediaImplementationService.UnloadImplementation(oldImplementation);
             }
 
             foreach (var loadedImplementationByKvp in _loadedImplementationsByReferenceId)
             {
-                UnloadImplementation(loadedImplementationByKvp.Value);
+                _mediaImplementationService.UnloadImplementation(loadedImplementationByKvp.Value);
             }
 
             foreach (var inProgressTaskKvp in _inProgressTasks)
@@ -108,9 +124,9 @@ namespace DomainDrivenGameEngine.Media.Services
         /// <summary>
         /// Gets the implementation for the given reference.
         /// </summary>
-        /// <param name="reference">The <see cref="IMediaReference{TMediaType}"/> to get the implementation for.</param>
+        /// <param name="reference">The <see cref="IMediaReference{TMedia}"/> to get the implementation for.</param>
         /// <returns>The implementation, or null if the implementation is not ready for use yet.</returns>
-        public TMediaImplementation GetImplementation(IMediaReference<TMediaType> reference)
+        public TMediaImplementation GetImplementation(IMediaReference<TMedia> reference)
         {
             if (reference == null)
             {
@@ -137,8 +153,11 @@ namespace DomainDrivenGameEngine.Media.Services
             {
                 if (inProgressTaskKvp.Value.IsCompleted)
                 {
-                    var loadedMedia = inProgressTaskKvp.Value.GetAwaiter().GetResult();
-                    _loadedImplementationsByReferenceId[inProgressTaskKvp.Key] = LoadImplementation(media: loadedMedia);
+                    var loadedMediaKvps = inProgressTaskKvp.Value.GetAwaiter().GetResult();
+                    var loadedPaths = loadedMediaKvps.Select(kvp => kvp.Key).Where(path => !string.IsNullOrWhiteSpace(path)).ToArray();
+                    var loadedMedia = loadedMediaKvps.Select(kvp => kvp.Value).ToArray();
+                    var loadedImplementation = _mediaImplementationService.LoadImplementation(loadedMedia, loadedPaths.Length > 0 ? loadedPaths : null);
+                    _loadedImplementationsByReferenceId[inProgressTaskKvp.Key] = loadedImplementation;
                     finishedReferenceIds.Add(inProgressTaskKvp.Key);
                     mediaImplementationsProcessed = true;
                 }
@@ -151,7 +170,7 @@ namespace DomainDrivenGameEngine.Media.Services
 
             foreach (var oldImplementation in _oldImplementations)
             {
-                UnloadImplementation(oldImplementation);
+                _mediaImplementationService.UnloadImplementation(oldImplementation);
                 mediaImplementationsProcessed = true;
             }
 
@@ -164,8 +183,8 @@ namespace DomainDrivenGameEngine.Media.Services
         /// References a piece of media.  If this is the first time referencing a given piece of media, lists the reference to be loaded.
         /// </summary>
         /// <param name="paths">One or more strings containing the file paths to reference.</param>
-        /// <returns>A <see cref="IMediaFileReference{TMediaType}"/> object which refers to the media at the specified paths.</returns>
-        public IMediaFileReference<TMediaType> Reference(params string[] paths)
+        /// <returns>A <see cref="IMediaFileReference{TMedia}"/> object which refers to the media at the specified paths.</returns>
+        public IMediaFileReference<TMedia> Reference(params string[] paths)
         {
             if (paths == null)
             {
@@ -177,28 +196,48 @@ namespace DomainDrivenGameEngine.Media.Services
                 throw new ArgumentException($"Attempting to reference an unexpected number of {nameof(paths)}: {paths.Length}.");
             }
 
-            var joinedPaths = MediaFileReference<TMediaType>.GetJoinedReferencePaths(paths);
+            var fullyQualifiedPaths = paths.Select(p => _fileAccessService.GetFullyQualifiedPath(p)).ToArray();
+            var joinedPaths = MediaFileReference<TMedia>.GetJoinedReferencePaths(fullyQualifiedPaths);
             if (_referencesByJoinedPaths.TryGetValue(joinedPaths, out var existingReference))
             {
                 _referenceCountsByReferenceId[existingReference.Id]++;
                 return existingReference;
             }
 
-            var reference = new MediaFileReference<TMediaType>(paths);
+            var reference = new MediaFileReference<TMedia>(fullyQualifiedPaths);
             _referencesByJoinedPaths.Add(joinedPaths, reference);
             _referenceCountsByReferenceId.Add(reference.Id, 1);
 
             var cancellationTokenSource = new CancellationTokenSource();
 
-            var tasks = new List<Task<TMediaType>>();
-            foreach (var path in paths)
+            var tasks = new List<Task<KeyValuePair<string, TMedia>>>();
+            foreach (var path in fullyQualifiedPaths)
             {
-                var extension = Path.GetExtension(path);
+                var extension = _fileAccessService.GetFileExtension(path);
                 var source = _mediaSourceServices.FirstOrDefault(mss => mss.IsExtensionSupported(extension));
 
                 tasks.Add(Task.Run(() =>
                 {
-                    return source.Load(path);
+                    if (!_fileAccessService.DoesFileExist(path))
+                    {
+                        var exception = new Exception($"File does not exist.");
+                        exception.Data["Path"] = path;
+                        throw exception;
+                    }
+
+                    var fileStream = _fileAccessService.OpenFile(path);
+
+                    try
+                    {
+                        return new KeyValuePair<string, TMedia>(path, source.Load(fileStream, path, extension));
+                    }
+                    finally
+                    {
+                        if (!_mediaImplementationService.IsSourceStreamRequired)
+                        {
+                            fileStream.Dispose();
+                        }
+                    }
                 }, cancellationTokenSource.Token));
             }
 
@@ -214,8 +253,8 @@ namespace DomainDrivenGameEngine.Media.Services
         /// References a provided piece of media and lists it to be loaded.
         /// </summary>
         /// <param name="media">The media to reference.</param>
-        /// <returns>A <see cref="IMediaReference{TMediaType}"/> object which refers to the media.</returns>
-        public IMediaReference<TMediaType> Reference(params TMediaType[] media)
+        /// <returns>A <see cref="IMediaReference{TMedia}"/> object which refers to the media.</returns>
+        public IMediaReference<TMedia> Reference(params TMedia[] media)
         {
             if (media == null)
             {
@@ -227,11 +266,11 @@ namespace DomainDrivenGameEngine.Media.Services
                 throw new ArgumentException($"Attempting to reference an unexpected number of {nameof(media)}: {media.Length}.");
             }
 
-            var reference = new MediaReference<TMediaType>();
+            var reference = new MediaReference<TMedia>();
             _referenceCountsByReferenceId.Add(reference.Id, 1);
 
             // Load the media as a task so that they can be processed at the same time as every other piece of media.
-            var wrapperTask = Task.FromResult(media);
+            var wrapperTask = Task.FromResult(media.Select(m => new KeyValuePair<string, TMedia>(string.Empty, m)).ToArray());
 
             _inProgressTasks.Add(reference.Id, wrapperTask);
 
@@ -241,8 +280,8 @@ namespace DomainDrivenGameEngine.Media.Services
         /// <summary>
         /// Unreferences a previously retrieved reference.  If no references remain, lists the reference to be unloaded.
         /// </summary>
-        /// <param name="reference">The <see cref="IMediaReference{TMediaType}"/> to unreference.</param>
-        public void Unreference(IMediaReference<TMediaType> reference)
+        /// <param name="reference">The <see cref="IMediaReference{TMedia}"/> to unreference.</param>
+        public void Unreference(IMediaReference<TMedia> reference)
         {
             if (reference == null)
             {
@@ -251,13 +290,13 @@ namespace DomainDrivenGameEngine.Media.Services
 
             if (!_referenceCountsByReferenceId.TryGetValue(reference.Id, out var currentReferenceCount))
             {
-                throw new ArgumentException($"Reference {reference.Id} is no longer being tracked by this {nameof(IMediaReferenceService<TMediaType>)} and cannot be unreferenced");
+                throw new ArgumentException($"Reference {reference.Id} is no longer being tracked by this {nameof(IMediaReferenceService<TMedia>)} and cannot be unreferenced");
             }
 
             var newReferenceCount = currentReferenceCount - 1;
             if (newReferenceCount == 0)
             {
-                var fileReference = reference as IMediaFileReference<TMediaType>;
+                var fileReference = reference as IMediaFileReference<TMedia>;
                 if (fileReference != null)
                 {
                     _referencesByJoinedPaths.Remove(fileReference.GetJoinedPaths());
@@ -285,18 +324,5 @@ namespace DomainDrivenGameEngine.Media.Services
 
             _referenceCountsByReferenceId[reference.Id] = newReferenceCount;
         }
-
-        /// <summary>
-        /// Loads the sourced media into the specific implementation.
-        /// </summary>
-        /// <param name="media">The loaded media.</param>
-        /// <returns>The processed implementation.</returns>
-        protected abstract TMediaImplementation LoadImplementation(params TMediaType[] media);
-
-        /// <summary>
-        /// Unloads a previously loaded implementation.
-        /// </summary>
-        /// <param name="implementation">The implementation to unload.</param>
-        protected abstract void UnloadImplementation(TMediaImplementation implementation);
     }
 }

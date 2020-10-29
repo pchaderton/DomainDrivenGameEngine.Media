@@ -6,12 +6,12 @@ namespace DomainDrivenGameEngine.Media.Models
     /// <summary>
     /// A reference to a piece of media defined by one or more file paths.
     /// </summary>
-    /// <typeparam name="TMediaType">The type of media this is a reference for.</typeparam>
-    internal class MediaFileReference<TMediaType> : MediaReference<TMediaType>, IMediaFileReference<TMediaType>
-        where TMediaType : class, IMedia
+    /// <typeparam name="TMedia">The type of media this is a reference for.</typeparam>
+    internal class MediaFileReference<TMedia> : MediaReference<TMedia>, IMediaFileReference<TMedia>
+        where TMedia : class, IMedia
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MediaFileReference{TMediaType}"/> class.
+        /// Initializes a new instance of the <see cref="MediaFileReference{TMedia}"/> class.
         /// </summary>
         /// <param name="paths">The paths used to generate this reference.</param>
         internal MediaFileReference(IReadOnlyCollection<string> paths)
@@ -42,7 +42,7 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <returns><c>true</c> if this reference is equal to the other object.</returns>
         public override bool Equals(object obj)
         {
-            var reference = obj as MediaFileReference<TMediaType>;
+            var reference = obj as MediaFileReference<TMedia>;
             if (reference == null)
             {
                 return false;
@@ -54,9 +54,9 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <summary>
         /// Checks to see if this reference is equal to another reference.
         /// </summary>
-        /// <param name="reference">The <see cref="MediaFileReference{TMediaType}"/> to compare against.</param>
+        /// <param name="reference">The <see cref="MediaFileReference{TMedia}"/> to compare against.</param>
         /// <returns><c>true</c> if this reference is equal to the other reference.</returns>
-        public bool Equals(MediaFileReference<TMediaType> reference)
+        public bool Equals(MediaFileReference<TMedia> reference)
         {
             return Id == reference.Id && GetJoinedPaths() == reference.GetJoinedPaths();
         }

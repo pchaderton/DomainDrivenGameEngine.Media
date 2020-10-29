@@ -3,9 +3,9 @@
     /// <summary>
     /// A reference to a piece of media.
     /// </summary>
-    /// <typeparam name="TMediaType">The type of media this is a reference for.</typeparam>
-    internal class MediaReference<TMediaType> : IMediaReference<TMediaType>
-        where TMediaType : class, IMedia
+    /// <typeparam name="TMedia">The type of media this is a reference for.</typeparam>
+    internal class MediaReference<TMedia> : IMediaReference<TMedia>
+        where TMedia : class, IMedia
     {
         /// <summary>
         /// A counter for keeping track of the next ID to use for a reference.
@@ -13,7 +13,7 @@
         private static int _referenceIdCounter = 0;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MediaReference{TMediaType}"/> class.
+        /// Initializes a new instance of the <see cref="MediaReference{TMedia}"/> class.
         /// </summary>
         internal MediaReference()
         {
@@ -32,7 +32,7 @@
         /// <returns><c>true</c> if this reference is equal to the other object.</returns>
         public override bool Equals(object obj)
         {
-            var reference = obj as MediaReference<TMediaType>;
+            var reference = obj as MediaReference<TMedia>;
             if (reference == null)
             {
                 return false;
@@ -44,9 +44,9 @@
         /// <summary>
         /// Checks to see if this reference is equal to another reference.
         /// </summary>
-        /// <param name="reference">The <see cref="MediaReference{TMediaType}"/> to compare against.</param>
+        /// <param name="reference">The <see cref="MediaReference{TMedia}"/> to compare against.</param>
         /// <returns><c>true</c> if this reference is equal to the other reference.</returns>
-        public bool Equals(MediaReference<TMediaType> reference)
+        public bool Equals(MediaReference<TMedia> reference)
         {
             return Id == reference.Id;
         }

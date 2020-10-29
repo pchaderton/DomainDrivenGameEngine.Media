@@ -5,9 +5,9 @@ namespace DomainDrivenGameEngine.Media.Models
     /// <summary>
     /// An interface for a reference to a piece of media defined by one or more file paths.
     /// </summary>
-    /// <typeparam name="TMediaType">The type of media this is a reference for.</typeparam>
-    public interface IMediaFileReference<TMediaType> : IMediaReference<TMediaType>
-        where TMediaType : class, IMedia
+    /// <typeparam name="TMedia">The type of media this is a reference for.</typeparam>
+    public interface IMediaFileReference<TMedia> : IMediaReference<TMedia>
+        where TMedia : class, IMedia
     {
         /// <summary>
         /// Gets the paths used to generate this reference.

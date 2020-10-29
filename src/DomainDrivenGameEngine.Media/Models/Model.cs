@@ -20,7 +20,7 @@ namespace DomainDrivenGameEngine.Media.Models
         }
 
         /// <summary>
-        /// Gets the embedded textures available for the model, to be used by nested meshes.
+        /// Gets the embedded textures in the model, to be used by nested meshes.
         /// </summary>
         public IReadOnlyCollection<Texture> EmbeddedTextures { get; }
 

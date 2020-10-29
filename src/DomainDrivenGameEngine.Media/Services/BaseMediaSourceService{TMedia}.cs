@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using DomainDrivenGameEngine.Media.Models;
 
@@ -8,9 +9,9 @@ namespace DomainDrivenGameEngine.Media.Services
     /// <summary>
     /// A base service for sourcing media, loading it into a domain media model.
     /// </summary>
-    /// <typeparam name="TMediaType">The type of media this service loads.</typeparam>
-    public abstract class BaseMediaSourceService<TMediaType> : IMediaSourceService<TMediaType>
-        where TMediaType : class, IMedia
+    /// <typeparam name="TMedia">The type of media this service loads.</typeparam>
+    public abstract class BaseMediaSourceService<TMedia> : IMediaSourceService<TMedia>
+        where TMedia : class, IMedia
     {
         /// <summary>
         /// A lookup of extensions that are supported by this service, including the '.' prefix.
@@ -18,7 +19,7 @@ namespace DomainDrivenGameEngine.Media.Services
         private readonly HashSet<string> _supportedExtensionLookup;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseMediaSourceService{TMediaType}"/> class.
+        /// Initializes a new instance of the <see cref="BaseMediaSourceService{TMedia}"/> class.
         /// </summary>
         /// <param name="extensions">The extensions supported by this source service.</param>
         protected BaseMediaSourceService(IReadOnlyCollection<string> extensions)
@@ -64,8 +65,10 @@ namespace DomainDrivenGameEngine.Media.Services
         /// <summary>
         /// Loads a given piece of media from the specified path.
         /// </summary>
-        /// <param name="path">The path to the media to load.</param>
+        /// <param name="stream">A <see cref="Stream"/> to the file to load.</param>
+        /// <param name="path">The path to the file that is the source of the provided <see cref="Stream"/>.</param>
+        /// <param name="extension">The extension of the source file.</param>
         /// <returns>The loaded media object.</returns>
-        public abstract TMediaType Load(string path);
+        public abstract TMedia Load(Stream stream, string path, string extension);
     }
 }

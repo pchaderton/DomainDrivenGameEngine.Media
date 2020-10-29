@@ -6,28 +6,28 @@ namespace DomainDrivenGameEngine.Media.Services
     /// <summary>
     /// An interface to a service for keeping track of references to media being used in the business logic of the application.
     /// </summary>
-    /// <typeparam name="TMediaType">The type of media this is a reference service for.</typeparam>
-    public interface IMediaReferenceService<TMediaType>
-        where TMediaType : class, IMedia
+    /// <typeparam name="TMedia">The type of media this is a reference service for.</typeparam>
+    public interface IMediaReferenceService<TMedia>
+        where TMedia : class, IMedia
     {
         /// <summary>
         /// References a piece of media.  If this is the first time referencing a given piece of media, lists the reference to be loaded.
         /// </summary>
         /// <param name="paths">One or more strings containing the file paths to reference.</param>
-        /// <returns>A <see cref="IMediaFileReference{TMediaType}"/> object which refers to the media at the specified paths.</returns>
-        IMediaFileReference<TMediaType> Reference(params string[] paths);
+        /// <returns>A <see cref="IMediaFileReference{TMedia}"/> object which refers to the media at the specified paths.</returns>
+        IMediaFileReference<TMedia> Reference(params string[] paths);
 
         /// <summary>
         /// References a provided piece of media and lists it to be loaded.
         /// </summary>
         /// <param name="media">The media to reference.</param>
-        /// <returns>A <see cref="IMediaReference{TMediaType}"/> object which refers to the media.</returns>
-        IMediaReference<TMediaType> Reference(params TMediaType[] media);
+        /// <returns>A <see cref="IMediaReference{TMedia}"/> object which refers to the media.</returns>
+        IMediaReference<TMedia> Reference(params TMedia[] media);
 
         /// <summary>
         /// Unreferences a previously retrieved reference.  If no references remain, lists the reference to be unloaded.
         /// </summary>
-        /// <param name="reference">The <see cref="IMediaReference{TMediaType}"/> to unreference.</param>
-        void Unreference(IMediaReference<TMediaType> reference);
+        /// <param name="reference">The <see cref="IMediaReference{TMedia}"/> to unreference.</param>
+        void Unreference(IMediaReference<TMedia> reference);
     }
 }
