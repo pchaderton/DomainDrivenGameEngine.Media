@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using DomainDrivenGameEngine.Media.Models;
 
 namespace DomainDrivenGameEngine.Media.Services
@@ -13,11 +14,19 @@ namespace DomainDrivenGameEngine.Media.Services
         where TMediaImplementation : class, IMediaImplementation<TMedia>
     {
         /// <summary>
+        /// A lookup to the number of paths and/or media this loading service expects to receive when a caller references it.
+        /// </summary>
+        private readonly HashSet<uint> _expectedCountLookup;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="BaseMediaImplementationService{TMedia, TMediaImplementation}"/> class.
         /// </summary>
+        /// <param name="supportedPathCounts">The number of path counts that this service can support loading.  Defaults to 1.</param>
         /// <param name="isSourceStreamRequired">A value indicating whether this implementation service requires file streams to be maintained.</param>
-        protected BaseMediaImplementationService(bool isSourceStreamRequired = false)
+        protected BaseMediaImplementationService(IReadOnlyCollection<uint> supportedPathCounts = null,
+                                                 bool isSourceStreamRequired = false)
         {
+            _expectedCountLookup = (supportedPathCounts ?? new uint[] { 1 }).ToHashSet();
             IsSourceStreamRequired = isSourceStreamRequired;
         }
 
@@ -28,6 +37,16 @@ namespace DomainDrivenGameEngine.Media.Services
         /// Any implementation of this interface that returns <c>true</c> from this property should dispose streams themself.
         /// </remarks>
         public bool IsSourceStreamRequired { get; }
+
+        /// <summary>
+        /// Checks to see if the specified count of media is supported.
+        /// </summary>
+        /// <param name="count">The amount of media to check.</param>
+        /// <returns><c>true</c> if the service supports the specified count of media.</returns>
+        public bool IsMediaCountSupported(uint count)
+        {
+            return _expectedCountLookup.Contains(count);
+        }
 
         /// <summary>
         /// Loads the sourced media into the specific implementation.

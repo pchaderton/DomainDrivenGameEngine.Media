@@ -17,11 +17,6 @@ namespace DomainDrivenGameEngine.Media.Services
         where TMediaImplementation : class, IMediaImplementation<TMedia>
     {
         /// <summary>
-        /// A lookup to the number of paths and/or media this loading service expects to receive when a caller references it.
-        /// </summary>
-        private readonly HashSet<uint> _expectedCountLookup;
-
-        /// <summary>
         /// The service to use for accessing files.
         /// </summary>
         private readonly IFileAccessService _fileAccessService;
@@ -72,16 +67,13 @@ namespace DomainDrivenGameEngine.Media.Services
         /// <param name="mediaSourceServices">The services to use for sourcing referenced media.</param>
         /// <param name="mediaImplementationService">The service which generates the final implementation of loaded media.</param>
         /// <param name="fileAccessService">The service to use for accessing files.</param>
-        /// <param name="supportedPathCounts">The number of path counts that this service can support loading.  Defaults to 1.</param>
         protected MediaLoadingService(IReadOnlyCollection<IMediaSourceService<TMedia>> mediaSourceServices,
                                       IMediaImplementationService<TMedia, TMediaImplementation> mediaImplementationService,
-                                      IFileAccessService fileAccessService,
-                                      IReadOnlyCollection<uint> supportedPathCounts = null)
+                                      IFileAccessService fileAccessService)
         {
             _mediaSourceServices = mediaSourceServices ?? throw new ArgumentNullException(nameof(mediaSourceServices));
             _mediaImplementationService = mediaImplementationService ?? throw new ArgumentNullException(nameof(mediaImplementationService));
             _fileAccessService = fileAccessService ?? throw new ArgumentNullException(nameof(fileAccessService));
-            _expectedCountLookup = (supportedPathCounts ?? new uint[] { 1 }).ToHashSet();
             _inProgressTaskCancellationTokenSources = new Dictionary<int, CancellationTokenSource>();
             _inProgressTasks = new Dictionary<int, Task<KeyValuePair<string, TMedia>[]>>();
             _loadedImplementationsByReferenceId = new Dictionary<int, TMediaImplementation>();
@@ -191,7 +183,7 @@ namespace DomainDrivenGameEngine.Media.Services
                 throw new ArgumentNullException(nameof(paths));
             }
 
-            if (!_expectedCountLookup.Contains((uint)paths.Length))
+            if (!_mediaImplementationService.IsMediaCountSupported((uint)paths.Length))
             {
                 throw new ArgumentException($"Attempting to reference an unexpected number of {nameof(paths)}: {paths.Length}.");
             }
@@ -261,7 +253,7 @@ namespace DomainDrivenGameEngine.Media.Services
                 throw new ArgumentNullException(nameof(media));
             }
 
-            if (!_expectedCountLookup.Contains((uint)media.Length))
+            if (!_mediaImplementationService.IsMediaCountSupported((uint)media.Length))
             {
                 throw new ArgumentException($"Attempting to reference an unexpected number of {nameof(media)}: {media.Length}.");
             }

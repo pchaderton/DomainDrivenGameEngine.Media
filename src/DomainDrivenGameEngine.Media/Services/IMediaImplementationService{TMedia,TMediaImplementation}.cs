@@ -21,6 +21,13 @@ namespace DomainDrivenGameEngine.Media.Services
         bool IsSourceStreamRequired { get; }
 
         /// <summary>
+        /// Checks to see if the specified count of media is supported.
+        /// </summary>
+        /// <param name="count">The amount of media to check.</param>
+        /// <returns><c>true</c> if the service supports the specified count of media.</returns>
+        bool IsMediaCountSupported(uint count);
+
+        /// <summary>
         /// Loads the sourced media into the specific implementation.
         /// </summary>
         /// <param name="media">The loaded media.</param>
