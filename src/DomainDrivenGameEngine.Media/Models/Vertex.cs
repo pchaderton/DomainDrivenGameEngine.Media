@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Collections.Generic;
+using System.Numerics;
 
 namespace DomainDrivenGameEngine.Media.Models
 {
@@ -15,14 +16,34 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <param name="tangent">The tangent of the vertex.</param>
         /// <param name="color">The color of the vertex.</param>
         /// <param name="textureCoordinate">The texture coordinate of the vertex.</param>
-        public Vertex(Vector3 position, Vector3 normal, Vector3 tangent, VertexColor color, Vector2 textureCoordinate)
+        /// <param name="boneIndices">Optional, the indices of the bones that affect this vertex.</param>
+        /// <param name="boneWeights">Optional, the weights of the bones that affect this vertex.</param>
+        public Vertex(Vector3 position,
+                      Vector3 normal,
+                      Vector3 tangent,
+                      VertexColor color,
+                      Vector2 textureCoordinate,
+                      List<byte> boneIndices = null,
+                      List<float> boneWeights = null)
         {
             Position = position;
             Normal = normal;
             Tangent = tangent;
             Color = color;
             TextureCoordinate = textureCoordinate;
+            BoneIndices = boneIndices;
+            BoneWeights = boneWeights;
         }
+
+        /// <summary>
+        /// Gets the indices of the bones that affect this vertex.
+        /// </summary>
+        public List<byte> BoneIndices { get; }
+
+        /// <summary>
+        /// Gets the weights of the bones that affect this vertex.
+        /// </summary>
+        public List<float> BoneWeights { get; }
 
         /// <summary>
         /// Gets the color of the vertex.
