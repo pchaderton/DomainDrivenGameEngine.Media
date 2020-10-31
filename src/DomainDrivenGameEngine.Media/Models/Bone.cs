@@ -14,17 +14,20 @@ namespace DomainDrivenGameEngine.Media.Models
         /// </summary>
         /// <param name="offsetMatrix">The matrix to use for offsetting this bone from the parent.</param>
         /// <param name="name">The name of the bone.</param>
-        /// <param name="parent">The parent of this bone.</param>
         /// <param name="children">The children of this bone.</param>
         public Bone(Matrix4x4 offsetMatrix,
                     string name,
-                    Bone parent = null,
                     IReadOnlyCollection<Bone> children = null)
         {
             OffsetMatrix = offsetMatrix;
             Name = name ?? throw new ArgumentNullException(nameof(name));
-            Parent = parent;
+            Parent = null;
             Children = children ?? new Bone[0];
+
+            foreach (var child in Children)
+            {
+                child.Parent = this;
+            }
         }
 
         /// <summary>
@@ -45,6 +48,6 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <summary>
         /// Gets the parent of this bone.
         /// </summary>
-        public Bone Parent { get; }
+        public Bone Parent { get; private set; }
     }
 }
