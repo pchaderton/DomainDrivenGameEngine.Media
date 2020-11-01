@@ -13,23 +13,23 @@ namespace DomainDrivenGameEngine.Media.Models
         /// </summary>
         /// <param name="name">The name of this animation.</param>
         /// <param name="channels">The channels in this animation.</param>
-        /// <param name="framesPerSecond">The frame rate per second of this animation.  Defaults to 60 frames per second.</param>
-        public Animation(string name, IReadOnlyCollection<AnimationChannel> channels, double framesPerSecond = 60.0)
+        /// <param name="durationInSeconds">The duration of the animation in seconds.</param>
+        public Animation(string name, IReadOnlyCollection<Channel> channels, double durationInSeconds)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Channels = channels ?? throw new ArgumentNullException(nameof(channels));
-            FramesPerSecond = framesPerSecond;
+            DurationInSeconds = durationInSeconds;
         }
 
         /// <summary>
         /// Gets the channels in this animation.
         /// </summary>
-        public IReadOnlyCollection<AnimationChannel> Channels { get; }
+        public IReadOnlyCollection<Channel> Channels { get; }
 
         /// <summary>
-        /// Gets the frame rate per second of this animation.
+        /// Gets the duration of the animation in seconds.
         /// </summary>
-        public double FramesPerSecond { get; }
+        public double DurationInSeconds { get; }
 
         /// <summary>
         /// Gets the name of this animation.

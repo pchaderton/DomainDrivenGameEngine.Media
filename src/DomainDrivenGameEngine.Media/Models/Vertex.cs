@@ -23,8 +23,8 @@ namespace DomainDrivenGameEngine.Media.Models
                       Vector3 tangent,
                       VertexColor color,
                       Vector2 textureCoordinate,
-                      List<byte> boneIndices = null,
-                      List<float> boneWeights = null)
+                      IReadOnlyCollection<byte> boneIndices = null,
+                      IReadOnlyCollection<float> boneWeights = null)
         {
             Position = position;
             Normal = normal;
@@ -38,12 +38,12 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <summary>
         /// Gets the indices of the bones that affect this vertex.
         /// </summary>
-        public List<byte> BoneIndices { get; }
+        public IReadOnlyCollection<byte> BoneIndices { get; }
 
         /// <summary>
         /// Gets the weights of the bones that affect this vertex.
         /// </summary>
-        public List<float> BoneWeights { get; }
+        public IReadOnlyCollection<float> BoneWeights { get; }
 
         /// <summary>
         /// Gets the color of the vertex.

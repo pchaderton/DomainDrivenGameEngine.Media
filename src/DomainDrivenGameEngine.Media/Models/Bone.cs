@@ -14,7 +14,7 @@ namespace DomainDrivenGameEngine.Media.Models
         /// </summary>
         /// <param name="offsetMatrix">The matrix to use for offsetting this bone from the parent.</param>
         /// <param name="name">The name of the bone.</param>
-        /// <param name="children">The children of this bone.</param>
+        /// <param name="children">The children of this bone.  The bones in this collection will have their parent set to this bone.</param>
         public Bone(Matrix4x4 offsetMatrix,
                     string name,
                     IReadOnlyCollection<Bone> children = null)

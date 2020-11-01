@@ -6,10 +6,10 @@ namespace DomainDrivenGameEngine.Media.Models
     /// <summary>
     /// A struct describing a mesh in a model.
     /// </summary>
-    public struct Mesh
+    public class Mesh
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Mesh"/> struct.
+        /// Initializes a new instance of the <see cref="Mesh"/> class.
         /// </summary>
         /// <param name="vertices">The vertices of the mesh.</param>
         /// <param name="indices">The indices of the vertices for each triangle in the mesh.</param>
