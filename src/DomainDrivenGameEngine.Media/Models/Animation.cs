@@ -6,7 +6,7 @@ namespace DomainDrivenGameEngine.Media.Models
     /// <summary>
     /// An animation for a <see cref="Model"/>.
     /// </summary>
-    public class Animation : IMedia
+    public class Animation
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Animation"/> class.

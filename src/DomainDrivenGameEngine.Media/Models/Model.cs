@@ -14,21 +14,22 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <param name="meshes">The meshes in the model.</param>
         /// <param name="embeddedTextures">Optional, the embedded textures in the model, to be referenced by nested meshes.</param>
         /// <param name="skeletonRoot">Optional, the skeleton root for the model.</param>
-        /// <param name="animations">Optional, the animations included with this model.</param>
+        /// <param name="animationCollection">Optional, the animations included with this model.</param>
         public Model(IReadOnlyCollection<Mesh> meshes,
                      IReadOnlyCollection<Texture> embeddedTextures = null,
                      Bone skeletonRoot = null,
-                     IReadOnlyCollection<Animation> animations = null)
+                     AnimationCollection animationCollection = null)
         {
             Meshes = meshes ?? throw new ArgumentNullException(nameof(meshes));
             EmbeddedTextures = embeddedTextures;
             SkeletonRoot = skeletonRoot;
+            AnimationCollection = animationCollection;
         }
 
         /// <summary>
         /// Gets the animations included with this model.
         /// </summary>
-        public IReadOnlyCollection<Animation> Animations { get; }
+        public AnimationCollection AnimationCollection { get; }
 
         /// <summary>
         /// Gets the embedded textures in the model, to be used by nested meshes.
