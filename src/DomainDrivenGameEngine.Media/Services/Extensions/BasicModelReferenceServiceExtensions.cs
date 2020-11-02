@@ -27,7 +27,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         public static IMediaReference<Model> ReferenceCircle(this IMediaReferenceService<Model> modelReferenceService,
                                                              float radius = 1.0f,
                                                              uint segments = 16,
-                                                             BasicModelOptions? options = null)
+                                                             BasicModelOptions options = null)
         {
             if (modelReferenceService == null)
             {
@@ -92,11 +92,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
             {
                 new Mesh(vertices,
                          indices,
-                         options?.TexturePaths,
-                         options?.TextureReferences,
-                         options?.DefaultBlendMode ?? BlendMode.None,
-                         options?.DefaultShaderPaths,
-                         options?.DefaultShaderReference),
+                         options?.Textures,
+                         options?.DefaultBlendMode ?? BlendMode.None),
             };
 
             return modelReferenceService.Reference(new Model(meshes));
@@ -115,7 +112,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
                                                           float radius = 1.0f,
                                                           float angle = MathF.PI / 2.0f,
                                                           uint segments = 16,
-                                                          BasicModelOptions? options = null)
+                                                          BasicModelOptions options = null)
         {
             if (modelReferenceService == null)
             {
@@ -191,11 +188,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
             {
                 new Mesh(vertices,
                          indices,
-                         options?.TexturePaths,
-                         options?.TextureReferences,
-                         options?.DefaultBlendMode ?? BlendMode.None,
-                         options?.DefaultShaderPaths,
-                         options?.DefaultShaderReference),
+                         options?.Textures,
+                         options?.DefaultBlendMode ?? BlendMode.None),
             };
 
             return modelReferenceService.Reference(new Model(meshes));
@@ -212,7 +206,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         public static IMediaReference<Model> ReferenceSingleSidedPlane(this IMediaReferenceService<Model> modelReferenceService,
                                                                        float width = 1.0f,
                                                                        float height = 1.0f,
-                                                                       BasicModelOptions? options = null)
+                                                                       BasicModelOptions options = null)
         {
             if (modelReferenceService == null)
             {
@@ -244,11 +238,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
             {
                 new Mesh(vertices,
                          indices,
-                         options?.TexturePaths,
-                         options?.TextureReferences,
-                         options?.DefaultBlendMode ?? BlendMode.None,
-                         options?.DefaultShaderPaths,
-                         options?.DefaultShaderReference),
+                         options?.Textures,
+                         options?.DefaultBlendMode ?? BlendMode.None),
             };
 
             return modelReferenceService.Reference(new Model(meshes));
@@ -265,7 +256,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         public static IMediaReference<Model> ReferenceDoubleSidedPlane(this IMediaReferenceService<Model> modelReferenceService,
                                                                        float width = 1.0f,
                                                                        float height = 1.0f,
-                                                                       BasicModelOptions? options = null)
+                                                                       BasicModelOptions options = null)
         {
             if (modelReferenceService == null)
             {
@@ -298,11 +289,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
             {
                 new Mesh(vertices,
                          indices,
-                         options?.TexturePaths,
-                         options?.TextureReferences,
-                         options?.DefaultBlendMode ?? BlendMode.None,
-                         options?.DefaultShaderPaths,
-                         options?.DefaultShaderReference),
+                         options?.Textures,
+                         options?.DefaultBlendMode ?? BlendMode.None),
             };
 
             return modelReferenceService.Reference(new Model(meshes));
@@ -321,7 +309,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
                                                            float width = 1.0f,
                                                            float height = 1.0f,
                                                            float depth = 1.0f,
-                                                           BasicModelOptions? options = null)
+                                                           BasicModelOptions options = null)
         {
             if (modelReferenceService == null)
             {
@@ -374,11 +362,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
             {
                 new Mesh(vertices,
                          indices,
-                         options?.TexturePaths,
-                         options?.TextureReferences,
-                         options?.DefaultBlendMode ?? BlendMode.None,
-                         options?.DefaultShaderPaths,
-                         options?.DefaultShaderReference),
+                         options?.Textures,
+                         options?.DefaultBlendMode ?? BlendMode.None),
             };
 
             return modelReferenceService.Reference(new Model(meshes));
@@ -393,7 +378,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <returns>A <see cref="IMediaReference{Model}"/> to the generated model.</returns>
         public static IMediaReference<Model> ReferenceCube(this IMediaReferenceService<Model> modelReferenceService,
                                                            float size = 1.0f,
-                                                           BasicModelOptions? options = null)
+                                                           BasicModelOptions options = null)
         {
             if (modelReferenceService == null)
             {
@@ -419,7 +404,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         public static IMediaReference<Model> ReferenceSphere(this IMediaReferenceService<Model> modelReferenceService,
                                                              float radius = 1.0f,
                                                              uint segments = 8,
-                                                             BasicModelOptions? options = null)
+                                                             BasicModelOptions options = null)
         {
             if (modelReferenceService == null)
             {
@@ -497,11 +482,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
             {
                 new Mesh(vertices,
                          indices,
-                         options?.TexturePaths,
-                         options?.TextureReferences,
-                         options?.DefaultBlendMode ?? BlendMode.None,
-                         options?.DefaultShaderPaths,
-                         options?.DefaultShaderReference),
+                         options?.Textures,
+                         options?.DefaultBlendMode ?? BlendMode.None),
             };
 
             return modelReferenceService.Reference(new Model(meshes));
@@ -520,7 +502,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
                                                                float radius = 1.0f,
                                                                float height = 1.0f,
                                                                uint segments = 8,
-                                                               BasicModelOptions? options = null)
+                                                               BasicModelOptions options = null)
         {
             if (modelReferenceService == null)
             {
@@ -629,11 +611,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
             {
                 new Mesh(vertices,
                          indices,
-                         options?.TexturePaths,
-                         options?.TextureReferences,
-                         options?.DefaultBlendMode ?? BlendMode.None,
-                         options?.DefaultShaderPaths,
-                         options?.DefaultShaderReference),
+                         options?.Textures,
+                         options?.DefaultBlendMode ?? BlendMode.None),
             };
 
             return modelReferenceService.Reference(new Model(meshes));
@@ -652,7 +631,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
                                                            float radius = 1.0f,
                                                            float height = 1.0f,
                                                            uint segments = 8,
-                                                           BasicModelOptions? options = null)
+                                                           BasicModelOptions options = null)
         {
             if (modelReferenceService == null)
             {
@@ -751,11 +730,8 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
             {
                 new Mesh(vertices,
                          indices,
-                         options?.TexturePaths,
-                         options?.TextureReferences,
-                         options?.DefaultBlendMode ?? BlendMode.None,
-                         options?.DefaultShaderPaths,
-                         options?.DefaultShaderReference),
+                         options?.Textures,
+                         options?.DefaultBlendMode ?? BlendMode.None),
             };
 
             return modelReferenceService.Reference(new Model(meshes));

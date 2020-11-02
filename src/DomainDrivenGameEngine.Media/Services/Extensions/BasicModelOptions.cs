@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using DomainDrivenGameEngine.Media.Models;
 
@@ -7,49 +9,35 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
     /// <summary>
     /// Options for use in generating basic models.
     /// </summary>
-    public struct BasicModelOptions
+    public class BasicModelOptions
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BasicModelOptions"/> struct.
+        /// Initializes a new instance of the <see cref="BasicModelOptions"/> class.
         /// </summary>
         /// <param name="color">The color to apply to each vertex.</param>
         /// <param name="offset">The offset amount to shift the model vertices by.</param>
-        /// <param name="texturePaths">The paths to the textures to use for this basic model.</param>
-        /// <param name="textureReferences">The references to the textures to use for this basic model.</param>
+        /// <param name="textures">The textures to use for this basic model.</param>
         /// <param name="defaultBlendMode">The default blend mode to use for this basic model.</param>
-        /// <param name="defaultShaderPaths">The paths to use for generating the default shader to use for rendering this basic model.</param>
-        /// <param name="defaultShaderReference">The reference to the default shader to use for rendering this basic model.</param>
         public BasicModelOptions(VertexColor? color = null,
                                  Vector3? offset = null,
-                                 IReadOnlyCollection<string> texturePaths = null,
-                                 IReadOnlyCollection<IMediaReference<Texture>> textureReferences = null,
-                                 BlendMode defaultBlendMode = BlendMode.None,
-                                 IReadOnlyCollection<string> defaultShaderPaths = null,
-                                 IMediaReference<Shader> defaultShaderReference = null)
+                                 IReadOnlyCollection<MeshTexture> textures = null,
+                                 BlendMode defaultBlendMode = BlendMode.None)
         {
+            if (textures != null && textures.Any(mt => mt.EmbeddedTextureIndex != null))
+            {
+                throw new ArgumentException($"Using {nameof(MeshTexture.EmbeddedTextureIndex)} is not supported when creating basic models.");
+            }
+
             Color = color ?? new VertexColor(1.0f, 1.0f, 1.0f, 1.0f);
             Offset = offset ?? Vector3.Zero;
-            TexturePaths = texturePaths;
-            TextureReferences = textureReferences;
+            Textures = textures;
             DefaultBlendMode = defaultBlendMode;
-            DefaultShaderPaths = defaultShaderPaths;
-            DefaultShaderReference = defaultShaderReference;
         }
 
         /// <summary>
         /// Gets the default blend mode to use for this basic model.
         /// </summary>
         public BlendMode DefaultBlendMode { get; }
-
-        /// <summary>
-        /// Gets the paths to use for generating the default shader to use for rendering this basic model.
-        /// </summary>
-        public IReadOnlyCollection<string> DefaultShaderPaths { get; }
-
-        /// <summary>
-        /// Gets the reference to the default shader to use for rendering this basic model.
-        /// </summary>
-        public IMediaReference<Shader> DefaultShaderReference { get; }
 
         /// <summary>
         /// Gets the color to apply to each vertex.
@@ -64,11 +52,6 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <summary>
         /// Gets the paths to the textures to use for this basic model.
         /// </summary>
-        public IReadOnlyCollection<string> TexturePaths { get; }
-
-        /// <summary>
-        /// Gets the references to the textures to use for this basic model.
-        /// </summary>
-        public IReadOnlyCollection<IMediaReference<Texture>> TextureReferences { get; }
+        public IReadOnlyCollection<MeshTexture> Textures { get; }
     }
 }
