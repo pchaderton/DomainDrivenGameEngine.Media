@@ -90,13 +90,13 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
 
             var meshes = new List<Mesh>
             {
-                new Mesh(vertices,
-                         indices,
+                new Mesh(vertices.AsReadOnly(),
+                         indices.AsReadOnly(),
                          options?.Textures,
                          options?.DefaultBlendMode ?? BlendMode.None),
             };
 
-            return modelReferenceService.Reference(new Model(meshes));
+            return modelReferenceService.Reference(new Model(meshes.AsReadOnly()));
         }
 
         /// <summary>
@@ -186,13 +186,13 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
 
             var meshes = new List<Mesh>
             {
-                new Mesh(vertices,
-                         indices,
+                new Mesh(vertices.AsReadOnly(),
+                         indices.AsReadOnly(),
                          options?.Textures,
                          options?.DefaultBlendMode ?? BlendMode.None),
             };
 
-            return modelReferenceService.Reference(new Model(meshes));
+            return modelReferenceService.Reference(new Model(meshes.AsReadOnly()));
         }
 
         /// <summary>
@@ -236,13 +236,13 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
 
             var meshes = new List<Mesh>
             {
-                new Mesh(vertices,
-                         indices,
+                new Mesh(vertices.AsReadOnly(),
+                         indices.AsReadOnly(),
                          options?.Textures,
                          options?.DefaultBlendMode ?? BlendMode.None),
             };
 
-            return modelReferenceService.Reference(new Model(meshes));
+            return modelReferenceService.Reference(new Model(meshes.AsReadOnly()));
         }
 
         /// <summary>
@@ -287,13 +287,13 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
 
             var meshes = new List<Mesh>
             {
-                new Mesh(vertices,
-                         indices,
+                new Mesh(vertices.AsReadOnly(),
+                         indices.AsReadOnly(),
                          options?.Textures,
                          options?.DefaultBlendMode ?? BlendMode.None),
             };
 
-            return modelReferenceService.Reference(new Model(meshes));
+            return modelReferenceService.Reference(new Model(meshes.AsReadOnly()));
         }
 
         /// <summary>
@@ -360,13 +360,13 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
 
             var meshes = new List<Mesh>
             {
-                new Mesh(vertices,
-                         indices,
+                new Mesh(vertices.AsReadOnly(),
+                         indices.AsReadOnly(),
                          options?.Textures,
                          options?.DefaultBlendMode ?? BlendMode.None),
             };
 
-            return modelReferenceService.Reference(new Model(meshes));
+            return modelReferenceService.Reference(new Model(meshes.AsReadOnly()));
         }
 
         /// <summary>
@@ -480,13 +480,13 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
 
             var meshes = new List<Mesh>
             {
-                new Mesh(vertices,
-                         indices,
+                new Mesh(vertices.AsReadOnly(),
+                         indices.AsReadOnly(),
                          options?.Textures,
                          options?.DefaultBlendMode ?? BlendMode.None),
             };
 
-            return modelReferenceService.Reference(new Model(meshes));
+            return modelReferenceService.Reference(new Model(meshes.AsReadOnly()));
         }
 
         /// <summary>
@@ -609,13 +609,13 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
 
             var meshes = new List<Mesh>
             {
-                new Mesh(vertices,
-                         indices,
+                new Mesh(vertices.AsReadOnly(),
+                         indices.AsReadOnly(),
                          options?.Textures,
                          options?.DefaultBlendMode ?? BlendMode.None),
             };
 
-            return modelReferenceService.Reference(new Model(meshes));
+            return modelReferenceService.Reference(new Model(meshes.AsReadOnly()));
         }
 
         /// <summary>
@@ -728,13 +728,13 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
 
             var meshes = new List<Mesh>
             {
-                new Mesh(vertices,
-                         indices,
+                new Mesh(vertices.AsReadOnly(),
+                         indices.AsReadOnly(),
                          options?.Textures,
                          options?.DefaultBlendMode ?? BlendMode.None),
             };
 
-            return modelReferenceService.Reference(new Model(meshes));
+            return modelReferenceService.Reference(new Model(meshes.AsReadOnly()));
         }
 
         /// <summary>
@@ -767,7 +767,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="vertices">The vertices to transform.</param>
         /// <param name="transformationMatrix">The matrix to transform the vertices by.</param>
         /// <returns>The transformed vertices.</returns>
-        private static List<Vertex> TransformVertices(IReadOnlyCollection<Vertex> vertices, Matrix4x4 transformationMatrix)
+        private static List<Vertex> TransformVertices(IEnumerable<Vertex> vertices, Matrix4x4 transformationMatrix)
         {
             var normalTransformationMatrix = Matrix4x4.Invert(Matrix4x4.Transpose(transformationMatrix), out var normalMatrix)
                 ? normalMatrix

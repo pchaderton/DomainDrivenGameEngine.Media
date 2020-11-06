@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Numerics;
 using DomainDrivenGameEngine.Media.Models;
@@ -20,7 +21,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="defaultBlendMode">The default blend mode to use for this basic model.</param>
         public BasicModelOptions(VertexColor? color = null,
                                  Vector3? offset = null,
-                                 IReadOnlyCollection<MeshTexture> textures = null,
+                                 IEnumerable<MeshTexture> textures = null,
                                  BlendMode defaultBlendMode = BlendMode.None)
         {
             if (textures != null && textures.Any(mt => mt.EmbeddedTextureIndex != null))
@@ -30,7 +31,9 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
 
             Color = color ?? new VertexColor(1.0f, 1.0f, 1.0f, 1.0f);
             Offset = offset ?? Vector3.Zero;
-            Textures = textures;
+            Textures = textures != null
+                ? new ReadOnlyCollection<MeshTexture>(textures?.ToArray())
+                : null;
             DefaultBlendMode = defaultBlendMode;
         }
 
@@ -52,6 +55,6 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <summary>
         /// Gets the paths to the textures to use for this basic model.
         /// </summary>
-        public IReadOnlyCollection<MeshTexture> Textures { get; }
+        public ReadOnlyCollection<MeshTexture> Textures { get; }
     }
 }

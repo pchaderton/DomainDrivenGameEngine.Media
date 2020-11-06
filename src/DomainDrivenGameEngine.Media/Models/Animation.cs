@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace DomainDrivenGameEngine.Media.Models
 {
@@ -14,7 +15,7 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <param name="name">The name of this animation.</param>
         /// <param name="channels">The channels in this animation.</param>
         /// <param name="durationInSeconds">The duration of the animation in seconds.</param>
-        public Animation(string name, IReadOnlyCollection<Channel> channels, double durationInSeconds)
+        public Animation(string name, ReadOnlyCollection<Channel> channels, double durationInSeconds)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Channels = channels ?? throw new ArgumentNullException(nameof(channels));
@@ -24,7 +25,7 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <summary>
         /// Gets the channels in this animation.
         /// </summary>
-        public IReadOnlyCollection<Channel> Channels { get; }
+        public IReadOnlyList<Channel> Channels { get; }
 
         /// <summary>
         /// Gets the duration of the animation in seconds.

@@ -12,7 +12,7 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <summary>
         /// Gets the paths used to generate this reference.
         /// </summary>
-        IReadOnlyCollection<string> Paths { get; }
+        IReadOnlyList<string> Paths { get; }
 
         /// <summary>
         /// Gets the joined paths for this reference.

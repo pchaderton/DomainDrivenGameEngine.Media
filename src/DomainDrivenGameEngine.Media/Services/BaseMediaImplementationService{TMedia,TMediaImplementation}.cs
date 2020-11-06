@@ -23,7 +23,7 @@ namespace DomainDrivenGameEngine.Media.Services
         /// </summary>
         /// <param name="supportedPathCounts">The number of path counts that this service can support loading.  Defaults to 1.</param>
         /// <param name="isSourceStreamRequired">A value indicating whether this implementation service requires file streams to be maintained.</param>
-        protected BaseMediaImplementationService(IReadOnlyCollection<uint> supportedPathCounts = null,
+        protected BaseMediaImplementationService(IEnumerable<uint> supportedPathCounts = null,
                                                  bool isSourceStreamRequired = false)
         {
             _expectedCountLookup = (supportedPathCounts ?? new uint[] { 1 }).ToHashSet();
@@ -54,7 +54,7 @@ namespace DomainDrivenGameEngine.Media.Services
         /// <param name="media">The loaded media.</param>
         /// <param name="paths">Optional, the paths that were used to load the media.</param>
         /// <returns>The processed implementation.</returns>
-        public abstract TMediaImplementation LoadImplementation(IReadOnlyCollection<TMedia> media, IReadOnlyCollection<string> paths = null);
+        public abstract TMediaImplementation LoadImplementation(IReadOnlyList<TMedia> media, IReadOnlyList<string> paths = null);
 
         /// <summary>
         /// Unloads a previously loaded implementation.

@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Numerics;
 
 namespace DomainDrivenGameEngine.Media.Models
 {
     /// <summary>
-    /// A struct describing a single vertex in a mesh.
+    /// A single vertex in a mesh.
     /// </summary>
-    public struct Vertex
+    public class Vertex
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Vertex"/> struct.
+        /// Initializes a new instance of the <see cref="Vertex"/> class.
         /// </summary>
         /// <param name="position">The position of the vertex.</param>
         /// <param name="normal">The normal of the vertex.</param>
@@ -23,27 +24,27 @@ namespace DomainDrivenGameEngine.Media.Models
                       Vector3 tangent,
                       VertexColor color,
                       Vector2 textureCoordinate,
-                      IReadOnlyCollection<byte> boneIndices = null,
-                      IReadOnlyCollection<float> boneWeights = null)
+                      ReadOnlyCollection<uint> boneIndices = null,
+                      ReadOnlyCollection<float> boneWeights = null)
         {
             Position = position;
             Normal = normal;
             Tangent = tangent;
             Color = color;
             TextureCoordinate = textureCoordinate;
-            BoneIndices = boneIndices;
-            BoneWeights = boneWeights;
+            BoneIndices = boneIndices ?? new ReadOnlyCollection<uint>(new uint[0]);
+            BoneWeights = boneWeights ?? new ReadOnlyCollection<float>(new float[0]);
         }
 
         /// <summary>
         /// Gets the indices of the bones that affect this vertex.
         /// </summary>
-        public IReadOnlyCollection<byte> BoneIndices { get; }
+        public IReadOnlyList<uint> BoneIndices { get; }
 
         /// <summary>
         /// Gets the weights of the bones that affect this vertex.
         /// </summary>
-        public IReadOnlyCollection<float> BoneWeights { get; }
+        public IReadOnlyList<float> BoneWeights { get; }
 
         /// <summary>
         /// Gets the color of the vertex.

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace DomainDrivenGameEngine.Media.Models
 {
@@ -15,7 +16,7 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <param name="height">The height of the texture in pixels.</param>
         /// <param name="pixelFormat">The pixel format used by the texture.</param>
         /// <param name="bytes">The bytes of the texture.</param>
-        public Texture(int width, int height, PixelFormat pixelFormat, IReadOnlyCollection<byte> bytes)
+        public Texture(int width, int height, PixelFormat pixelFormat, ReadOnlyCollection<byte> bytes)
         {
             if (width <= 0)
             {
@@ -48,7 +49,7 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <summary>
         /// Gets the bytes of the texture.
         /// </summary>
-        public IReadOnlyCollection<byte> Bytes { get; }
+        public IReadOnlyList<byte> Bytes { get; }
 
         /// <summary>
         /// Gets the format of the pixels in the texture.

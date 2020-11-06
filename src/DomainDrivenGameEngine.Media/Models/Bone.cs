@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Numerics;
 
 namespace DomainDrivenGameEngine.Media.Models
@@ -17,12 +18,12 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <param name="children">The children of this bone.  The bones in this collection will have their parent set to this bone.</param>
         public Bone(Matrix4x4 offsetMatrix,
                     string name,
-                    IReadOnlyCollection<Bone> children = null)
+                    ReadOnlyCollection<Bone> children = null)
         {
             OffsetMatrix = offsetMatrix;
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Parent = null;
-            Children = children ?? new Bone[0];
+            Children = children ?? new ReadOnlyCollection<Bone>(new Bone[0]);
 
             foreach (var child in Children)
             {
@@ -33,7 +34,7 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <summary>
         /// Gets the children of this bone.
         /// </summary>
-        public IReadOnlyCollection<Bone> Children { get; }
+        public IReadOnlyList<Bone> Children { get; }
 
         /// <summary>
         /// Gets the name of the bone.

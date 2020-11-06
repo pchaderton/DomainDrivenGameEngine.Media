@@ -1,4 +1,6 @@
-﻿namespace DomainDrivenGameEngine.Media.Models
+﻿using System.Drawing;
+
+namespace DomainDrivenGameEngine.Media.Models
 {
     /// <summary>
     /// A struct describing a color for a vertex.
@@ -39,5 +41,15 @@
         /// Gets the alpha value of the vertex color.
         /// </summary>
         public float Alpha { get; }
+
+        /// <summary>
+        /// Creates a new <see cref="VertexColor"/> based on a <see cref="Color"/> value.
+        /// </summary>
+        /// <param name="color">The <see cref="Color"/> value.</param>
+        /// <returns>A <see cref="VertexColor"/> value.</returns>
+        public static VertexColor FromDrawingColor(Color color)
+        {
+            return new VertexColor((float)color.R / 255.0f, (float)color.G / 255.0f, (float)color.B / 255.0f, (float)color.A / 255.0f);
+        }
     }
 }

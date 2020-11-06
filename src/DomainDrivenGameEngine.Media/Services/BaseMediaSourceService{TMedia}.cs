@@ -22,24 +22,21 @@ namespace DomainDrivenGameEngine.Media.Services
         /// Initializes a new instance of the <see cref="BaseMediaSourceService{TMedia}"/> class.
         /// </summary>
         /// <param name="extensions">The extensions supported by this source service.</param>
-        protected BaseMediaSourceService(IReadOnlyCollection<string> extensions)
+        protected BaseMediaSourceService(IEnumerable<string> extensions)
         {
-            if (extensions == null)
-            {
-                throw new ArgumentNullException(nameof(extensions));
-            }
+            var supportedExtensionLookup = extensions?.Select(ext => ext.ToLowerInvariant()).ToHashSet() ?? throw new ArgumentNullException(nameof(extensions));
 
-            if (extensions.Count == 0)
+            if (supportedExtensionLookup.Count == 0)
             {
                 throw new ArgumentException($"At least one entry in {nameof(extensions)} is required.");
             }
 
-            if (extensions.Any(ext => !ext.StartsWith('.')))
+            if (supportedExtensionLookup.Any(ext => !ext.StartsWith('.')))
             {
                 throw new ArgumentException($"All entries in {nameof(extensions)} must start with a '.' character.");
             }
 
-            _supportedExtensionLookup = extensions.Select(ext => ext.ToLowerInvariant()).ToHashSet();
+            _supportedExtensionLookup = supportedExtensionLookup;
         }
 
         /// <summary>

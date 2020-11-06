@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace DomainDrivenGameEngine.Media.Models
 {
@@ -14,32 +15,32 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <param name="meshes">The meshes in the model.</param>
         /// <param name="embeddedTextures">Optional, the embedded textures in the model, to be referenced by nested meshes.</param>
         /// <param name="skeletonRoot">Optional, the skeleton root for the model.</param>
-        /// <param name="animationCollection">Optional, the animations included with this model.</param>
-        public Model(IReadOnlyCollection<Mesh> meshes,
-                     IReadOnlyCollection<Texture> embeddedTextures = null,
+        /// <param name="embeddedAnimationCollection">Optional, the animations embedded in the model.</param>
+        public Model(ReadOnlyCollection<Mesh> meshes,
+                     ReadOnlyCollection<Texture> embeddedTextures = null,
                      Bone skeletonRoot = null,
-                     AnimationCollection animationCollection = null)
+                     AnimationCollection embeddedAnimationCollection = null)
         {
             Meshes = meshes ?? throw new ArgumentNullException(nameof(meshes));
-            EmbeddedTextures = embeddedTextures;
+            EmbeddedTextures = embeddedTextures ?? new ReadOnlyCollection<Texture>(new Texture[0]);
             SkeletonRoot = skeletonRoot;
-            AnimationCollection = animationCollection;
+            EmbeddedAnimationCollection = embeddedAnimationCollection ?? new AnimationCollection(new Animation[0]);
         }
 
         /// <summary>
-        /// Gets the animations included with this model.
+        /// Gets the animations embedded in the model.
         /// </summary>
-        public AnimationCollection AnimationCollection { get; }
+        public AnimationCollection EmbeddedAnimationCollection { get; }
 
         /// <summary>
         /// Gets the embedded textures in the model, to be used by nested meshes.
         /// </summary>
-        public IReadOnlyCollection<Texture> EmbeddedTextures { get; }
+        public IReadOnlyList<Texture> EmbeddedTextures { get; }
 
         /// <summary>
         /// Gets the meshes in the model.
         /// </summary>
-        public IReadOnlyCollection<Mesh> Meshes { get; }
+        public IReadOnlyList<Mesh> Meshes { get; }
 
         /// <summary>
         /// Gets the skeleton root for the model.

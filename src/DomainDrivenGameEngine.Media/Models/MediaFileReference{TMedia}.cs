@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace DomainDrivenGameEngine.Media.Models
 {
@@ -14,7 +15,7 @@ namespace DomainDrivenGameEngine.Media.Models
         /// Initializes a new instance of the <see cref="MediaFileReference{TMedia}"/> class.
         /// </summary>
         /// <param name="paths">The paths used to generate this reference.</param>
-        internal MediaFileReference(IReadOnlyCollection<string> paths)
+        internal MediaFileReference(ReadOnlyCollection<string> paths)
             : base()
         {
             Paths = paths ?? throw new ArgumentNullException(nameof(paths));
@@ -23,14 +24,14 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <summary>
         /// Gets the paths used to generate this reference.
         /// </summary>
-        public IReadOnlyCollection<string> Paths { get; }
+        public IReadOnlyList<string> Paths { get; }
 
         /// <summary>
         /// Gets paths joined for comparing between references.
         /// </summary>
         /// <param name="paths">The paths to join.</param>
         /// <returns>A string containing the joined paths.</returns>
-        public static string GetJoinedReferencePaths(IReadOnlyCollection<string> paths)
+        public static string GetJoinedReferencePaths(IEnumerable<string> paths)
         {
             return string.Join(',', paths);
         }

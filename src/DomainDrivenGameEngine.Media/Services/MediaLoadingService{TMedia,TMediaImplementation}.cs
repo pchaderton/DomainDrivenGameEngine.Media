@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,7 +45,7 @@ namespace DomainDrivenGameEngine.Media.Services
         /// <summary>
         /// The services to use for sourcing referenced media.
         /// </summary>
-        private readonly IReadOnlyCollection<IMediaSourceService<TMedia>> _mediaSourceServices;
+        private readonly IReadOnlyList<IMediaSourceService<TMedia>> _mediaSourceServices;
 
         /// <summary>
         /// Implementations that are no longer referenced and need to be unloaded.
@@ -134,6 +135,15 @@ namespace DomainDrivenGameEngine.Media.Services
         }
 
         /// <summary>
+        /// Checks to see if this service is currently loading any media.
+        /// </summary>
+        /// <returns><c>true</c> if the service is currently loading media.</returns>
+        public bool IsLoadingMedia()
+        {
+            return _inProgressTasks.Count > 0;
+        }
+
+        /// <summary>
         /// Handles processing any loaded media into their final implementations, as well as cleaning up any unloaded implementations.
         /// </summary>
         /// <returns><c>true</c> if any media was processed.</returns>
@@ -196,7 +206,7 @@ namespace DomainDrivenGameEngine.Media.Services
                 return existingReference;
             }
 
-            var reference = new MediaFileReference<TMedia>(fullyQualifiedPaths);
+            var reference = new MediaFileReference<TMedia>(new ReadOnlyCollection<string>(fullyQualifiedPaths));
             _referencesByJoinedPaths.Add(joinedPaths, reference);
             _referenceCountsByReferenceId.Add(reference.Id, 1);
 

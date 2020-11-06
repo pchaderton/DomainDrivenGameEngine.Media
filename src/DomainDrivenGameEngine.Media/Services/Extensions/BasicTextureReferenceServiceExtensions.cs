@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using DomainDrivenGameEngine.Media.Models;
 
 namespace DomainDrivenGameEngine.Media.Services.Extensions
@@ -23,7 +24,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
                 throw new ArgumentNullException(nameof(textureReferenceService));
             }
 
-            return textureReferenceService.Reference(new Texture(1, 1, PixelFormat.Rgb8, new[] { red, green, blue }));
+            return textureReferenceService.Reference(new Texture(1, 1, PixelFormat.Rgb8, new ReadOnlyCollection<byte>(new[] { red, green, blue })));
         }
 
         /// <summary>
@@ -42,7 +43,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
                 throw new ArgumentNullException(nameof(textureReferenceService));
             }
 
-            return textureReferenceService.Reference(new Texture(1, 1, PixelFormat.Rgba8, new[] { red, green, blue, alpha }));
+            return textureReferenceService.Reference(new Texture(1, 1, PixelFormat.Rgba8, new ReadOnlyCollection<byte>(new[] { red, green, blue, alpha })));
         }
     }
 }

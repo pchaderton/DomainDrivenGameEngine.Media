@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace DomainDrivenGameEngine.Media.Models
 {
     /// <summary>
-    /// A struct describing a mesh in a model.
+    /// A mesh in a model.
     /// </summary>
     public class Mesh
     {
@@ -15,14 +16,14 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <param name="indices">The indices of the vertices for each triangle in the mesh.</param>
         /// <param name="meshTextures">The textures used by the mesh.</param>
         /// <param name="defaultBlendMode">The default blend mode to use when rendering this mesh.</param>
-        public Mesh(IReadOnlyCollection<Vertex> vertices,
-                    IReadOnlyCollection<uint> indices,
-                    IReadOnlyCollection<MeshTexture> meshTextures,
+        public Mesh(ReadOnlyCollection<Vertex> vertices,
+                    ReadOnlyCollection<uint> indices,
+                    ReadOnlyCollection<MeshTexture> meshTextures,
                     BlendMode defaultBlendMode = BlendMode.None)
         {
             Vertices = vertices ?? throw new ArgumentNullException(nameof(vertices));
             Indices = indices ?? throw new ArgumentNullException(nameof(indices));
-            MeshTextures = meshTextures ?? new MeshTexture[0];
+            MeshTextures = meshTextures ?? new ReadOnlyCollection<MeshTexture>(new MeshTexture[0]);
             DefaultBlendMode = defaultBlendMode;
         }
 
@@ -34,16 +35,16 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <summary>
         /// Gets the indices of the vertices for each triangle in the mesh.
         /// </summary>
-        public IReadOnlyCollection<uint> Indices { get; }
+        public IReadOnlyList<uint> Indices { get; }
 
         /// <summary>
         /// Gets the textures used by the mesh.
         /// </summary>
-        public IReadOnlyCollection<MeshTexture> MeshTextures { get; }
+        public IReadOnlyList<MeshTexture> MeshTextures { get; }
 
         /// <summary>
         /// Gets the vertices of the mesh.
         /// </summary>
-        public IReadOnlyCollection<Vertex> Vertices { get; }
+        public IReadOnlyList<Vertex> Vertices { get; }
     }
 }

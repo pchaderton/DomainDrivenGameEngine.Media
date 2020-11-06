@@ -33,7 +33,7 @@ namespace DomainDrivenGameEngine.Media.Services
         /// <param name="media">The loaded media.</param>
         /// <param name="paths">Optional, the paths that were used to load the media.</param>
         /// <returns>The processed implementation.</returns>
-        TMediaImplementation LoadImplementation(IReadOnlyCollection<TMedia> media, IReadOnlyCollection<string> paths = null);
+        TMediaImplementation LoadImplementation(IReadOnlyList<TMedia> media, IReadOnlyList<string> paths = null);
 
         /// <summary>
         /// Unloads a previously loaded implementation.
