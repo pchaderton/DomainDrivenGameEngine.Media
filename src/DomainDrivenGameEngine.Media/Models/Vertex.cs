@@ -22,7 +22,7 @@ namespace DomainDrivenGameEngine.Media.Models
         public Vertex(Vector3 position,
                       Vector3 normal,
                       Vector3 tangent,
-                      VertexColor color,
+                      Color color,
                       Vector2 textureCoordinate,
                       ReadOnlyCollection<uint> boneIndices = null,
                       ReadOnlyCollection<float> boneWeights = null)
@@ -49,7 +49,7 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <summary>
         /// Gets the color of the vertex.
         /// </summary>
-        public VertexColor Color { get; }
+        public Color Color { get; }
 
         /// <summary>
         /// Gets the normal of the vertex.

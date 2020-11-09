@@ -745,7 +745,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="offset">The offset to apply to the vertices.</param>
         /// <param name="color">The color to apply to the vertices.</param>
         /// <returns>A <see cref="List{Vertex}"/> of vertices for a plane mesh.</returns>
-        private static List<Vertex> BuildPlaneVertices(float width, float height, Vector3 offset, VertexColor color)
+        private static List<Vertex> BuildPlaneVertices(float width, float height, Vector3 offset, Color color)
         {
             var halfWidth = width / 2.0f;
             var halfHeight = height / 2.0f;

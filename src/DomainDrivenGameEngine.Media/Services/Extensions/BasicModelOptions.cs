@@ -19,7 +19,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <param name="offset">The offset amount to shift the model vertices by.</param>
         /// <param name="textures">The textures to use for this basic model.</param>
         /// <param name="defaultBlendMode">The default blend mode to use for this basic model.</param>
-        public BasicModelOptions(VertexColor? color = null,
+        public BasicModelOptions(Color? color = null,
                                  Vector3? offset = null,
                                  IEnumerable<MeshTexture> textures = null,
                                  BlendMode defaultBlendMode = BlendMode.None)
@@ -29,7 +29,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
                 throw new ArgumentException($"Using {nameof(MeshTexture.EmbeddedTextureIndex)} is not supported when creating basic models.");
             }
 
-            Color = color ?? new VertexColor(1.0f, 1.0f, 1.0f, 1.0f);
+            Color = color ?? new Color(1.0f, 1.0f, 1.0f, 1.0f);
             Offset = offset ?? Vector3.Zero;
             Textures = textures != null
                 ? new ReadOnlyCollection<MeshTexture>(textures?.ToArray())
@@ -45,7 +45,7 @@ namespace DomainDrivenGameEngine.Media.Services.Extensions
         /// <summary>
         /// Gets the color to apply to each vertex.
         /// </summary>
-        public VertexColor Color { get; }
+        public Color Color { get; }
 
         /// <summary>
         /// Gets the offset amount to shift the model vertices by.
