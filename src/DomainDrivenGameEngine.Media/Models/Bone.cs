@@ -69,7 +69,9 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <param name="parentGlobalOffsetMatrix">The <see cref="Matrix4x4"/> which represents the bone parent's total offset matrix.</param>
         private void ComputeWorldToBindMatrix(Matrix4x4 parentGlobalOffsetMatrix)
         {
-            var globalOffsetMatrix = parentGlobalOffsetMatrix * OffsetMatrix;
+            var transposedOffsetMatrix = Matrix4x4.Transpose(OffsetMatrix);
+
+            var globalOffsetMatrix = parentGlobalOffsetMatrix * transposedOffsetMatrix;
 
             Matrix4x4.Invert(globalOffsetMatrix, out var worldToBindMatrix);
 
