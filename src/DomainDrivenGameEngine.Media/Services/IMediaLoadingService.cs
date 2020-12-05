@@ -1,20 +1,37 @@
 ﻿namespace DomainDrivenGameEngine.Media.Services
 {
     /// <summary>
-    /// An interface describing a service for loading referenced media.
+    /// An interface describing a service for loading and unloading media across all media services.
     /// </summary>
     public interface IMediaLoadingService
     {
         /// <summary>
-        /// Checks to see if this service is currently loading any media.
+        /// Checks to see if any media service has any media that can be unloaded.
         /// </summary>
-        /// <returns><c>true</c> if the service is currently loading media.</returns>
+        /// <returns><c>true</c> if any media can be unloaded.</returns>
+        bool CanUnloadMedia();
+
+        /// <summary>
+        /// Checks to see if any media service is currently loading any media.
+        /// </summary>
+        /// <returns><c>true</c> if any media is currently being loaded.</returns>
         bool IsLoadingMedia();
 
         /// <summary>
-        /// Handles processing any loaded media into their final implementations, as well as cleaning up any unloaded implementations.
+        /// Handles loading any media that has finished being read into their final implementations across all media services.
         /// </summary>
-        /// <returns><c>true</c> if any media was processed.</returns>
-        bool ProcessMediaImplementations();
+        /// <returns><c>true</c> if any media was loaded.</returns>
+        bool LoadMedia();
+
+        /// <summary>
+        /// Stops all in-progress media being loaded and unloads all loaded media across all media services.
+        /// </summary>
+        void Reset();
+
+        /// <summary>
+        /// Handles unloading any media that is no longer being referenced across all media services.
+        /// </summary>
+        /// <returns><c>true</c> if any media was unloaded.</returns>
+        bool UnloadMedia();
     }
 }

@@ -18,12 +18,18 @@
         internal MediaReference()
         {
             Id = ++_referenceIdCounter;
+            ReferenceCount = 1;
         }
 
         /// <summary>
         /// Gets the ID of this reference.
         /// </summary>
         public int Id { get; }
+
+        /// <summary>
+        /// Gets or sets the number of references being tracked for this reference.
+        /// </summary>
+        public int ReferenceCount { get; set; }
 
         /// <summary>
         /// Checks to see if this reference is equal to another object.

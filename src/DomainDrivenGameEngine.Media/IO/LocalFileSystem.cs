@@ -1,32 +1,41 @@
 ﻿using System.IO;
 
-namespace DomainDrivenGameEngine.Media.Services
+namespace DomainDrivenGameEngine.Media.IO
 {
     /// <summary>
-    /// An interface to a service for accessing files.
+    /// A class for accessing files from the local file system.
     /// </summary>
-    public interface IFileAccessService
+    public class LocalFileSystem : IFileSystem
     {
         /// <summary>
         /// Checks to see if a file exists or not.
         /// </summary>
         /// <param name="path">The path to check.</param>
         /// <returns><c>true</c> if the file exists.</returns>
-        bool DoesFileExist(string path);
+        public bool DoesFileExist(string path)
+        {
+            return File.Exists(path);
+        }
 
         /// <summary>
         /// Gets the file extension for a given path.
         /// </summary>
         /// <param name="path">The file path.</param>
         /// <returns>The file extension, including prefixed '.'.</returns>
-        string GetFileExtension(string path);
+        public string GetFileExtension(string path)
+        {
+            return Path.GetExtension(path);
+        }
 
         /// <summary>
         /// Gets the fully qualified path for a given input path.
         /// </summary>
         /// <param name="path">The input path to fully qualify.</param>
         /// <returns>The fully qualified path.</returns>
-        string GetFullyQualifiedPath(string path);
+        public string GetFullyQualifiedPath(string path)
+        {
+            return Path.GetFullPath(path);
+        }
 
         /// <summary>
         /// Gets the fully qualified relative path of one file compared to another.
@@ -34,20 +43,31 @@ namespace DomainDrivenGameEngine.Media.Services
         /// <param name="path">The original file path.</param>
         /// <param name="relativePath">The relative path in comparison to the original file path.</param>
         /// <returns>The path to the file relative to the original path.</returns>
-        string GetFullyQualifiedRelativePath(string path, string relativePath);
+        public string GetFullyQualifiedRelativePath(string path, string relativePath)
+        {
+            var directory = Path.GetDirectoryName(path);
+            var newPath = Path.Combine(directory, relativePath);
+            return Path.GetFullPath(newPath);
+        }
 
         /// <summary>
         /// Checks to see if a path is fully qualified.
         /// </summary>
         /// <param name="path">The path to check.</param>
         /// <returns><c>true</c> if the path is fully qualified.</returns>
-        bool IsPathFullyQualified(string path);
+        public bool IsPathFullyQualified(string path)
+        {
+            return Path.IsPathFullyQualified(path);
+        }
 
         /// <summary>
-        /// Opens a file stream to a given path.
+        /// Opens a <see cref="Stream"/> to read a file from the file system.
         /// </summary>
         /// <param name="path">The path to the file.</param>
         /// <returns>A <see cref="Stream"/> for streaming the contents of the file.</returns>
-        Stream OpenFile(string path);
+        public Stream OpenFile(string path)
+        {
+            return File.OpenRead(path);
+        }
     }
 }

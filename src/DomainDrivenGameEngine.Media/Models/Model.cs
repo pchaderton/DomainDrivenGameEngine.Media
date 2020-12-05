@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 
 namespace DomainDrivenGameEngine.Media.Models
 {
     /// <summary>
     /// A model.
     /// </summary>
-    public class Model : IMedia
+    public class Model : BaseMedia
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Model"/> class.
@@ -16,10 +17,13 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <param name="embeddedTextures">Optional, the embedded textures in the model, to be referenced by nested meshes.</param>
         /// <param name="skeletonRoot">Optional, the skeleton root for the model.</param>
         /// <param name="embeddedAnimationCollection">Optional, the animations embedded in the model.</param>
+        /// <param name="sourceStream">The source <see cref="Stream"/> used to read this model.</param>
         public Model(ReadOnlyCollection<Mesh> meshes,
                      ReadOnlyCollection<Texture> embeddedTextures = null,
                      Bone skeletonRoot = null,
-                     AnimationCollection embeddedAnimationCollection = null)
+                     AnimationCollection embeddedAnimationCollection = null,
+                     Stream sourceStream = null)
+            : base(sourceStream)
         {
             Meshes = meshes ?? throw new ArgumentNullException(nameof(meshes));
             EmbeddedTextures = embeddedTextures ?? new ReadOnlyCollection<Texture>(new Texture[0]);

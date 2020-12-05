@@ -8,7 +8,7 @@ namespace DomainDrivenGameEngine.Media.Models
     /// <summary>
     /// A bone in a skeleton for a skinned model.
     /// </summary>
-    public class Bone : IMedia
+    public class Bone
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Bone"/> class.

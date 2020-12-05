@@ -5,7 +5,7 @@ using System.Linq;
 using System.Numerics;
 using DomainDrivenGameEngine.Media.Models;
 
-namespace DomainDrivenGameEngine.Media.Services.Extensions
+namespace DomainDrivenGameEngine.Media.Extensions
 {
     /// <summary>
     /// Options for use in generating basic models.

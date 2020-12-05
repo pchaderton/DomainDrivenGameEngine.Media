@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using DomainDrivenGameEngine.Media.Models;
+using DomainDrivenGameEngine.Media.Services;
 
-namespace DomainDrivenGameEngine.Media.Services.Extensions
+namespace DomainDrivenGameEngine.Media.Extensions
 {
     /// <summary>
     /// Extension methods for generating and referencing basic models via a <see cref="IMediaReferenceService{Model}"/>.

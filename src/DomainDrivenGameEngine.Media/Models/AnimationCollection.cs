@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace DomainDrivenGameEngine.Media.Models
@@ -8,7 +7,7 @@ namespace DomainDrivenGameEngine.Media.Models
     /// <summary>
     /// A collection of animation data.
     /// </summary>
-    public class AnimationCollection : ReadOnlyCollection<Animation>, IMedia, IMediaImplementation<AnimationCollection>
+    public class AnimationCollection : BaseMediaCollection<Animation>, IMediaImplementation<AnimationCollection>
     {
         /// <summary>
         /// A dictionary lookup of animations in the collection keyed by name.

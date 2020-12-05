@@ -4,13 +4,13 @@ using System.IO;
 using System.Linq;
 using DomainDrivenGameEngine.Media.Models;
 
-namespace DomainDrivenGameEngine.Media.Services
+namespace DomainDrivenGameEngine.Media.Readers
 {
     /// <summary>
-    /// A base service for sourcing media, loading it into a domain media model.
+    /// An abstract base class for a class for reading media.
     /// </summary>
-    /// <typeparam name="TMedia">The type of media this service loads.</typeparam>
-    public abstract class BaseMediaSourceService<TMedia> : IMediaSourceService<TMedia>
+    /// <typeparam name="TMedia">The type of media this class reads.</typeparam>
+    public abstract class BaseMediaReader<TMedia> : IMediaReader<TMedia>
         where TMedia : class, IMedia
     {
         /// <summary>
@@ -19,10 +19,10 @@ namespace DomainDrivenGameEngine.Media.Services
         private readonly HashSet<string> _supportedExtensionLookup;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseMediaSourceService{TMedia}"/> class.
+        /// Initializes a new instance of the <see cref="BaseMediaReader{TMedia}"/> class.
         /// </summary>
         /// <param name="extensions">The extensions supported by this source service.</param>
-        protected BaseMediaSourceService(IEnumerable<string> extensions)
+        protected BaseMediaReader(IEnumerable<string> extensions)
         {
             var supportedExtensionLookup = extensions?.Select(ext => ext.ToLowerInvariant()).ToHashSet() ?? throw new ArgumentNullException(nameof(extensions));
 
@@ -40,10 +40,10 @@ namespace DomainDrivenGameEngine.Media.Services
         }
 
         /// <summary>
-        /// Checks to see if this source supports loading the given extension.
+        /// Checks to see if this reader supports loading the given extension.
         /// </summary>
         /// <param name="extension">The extension to check against, including the '.' prefix.</param>
-        /// <returns><c>true</c> if this service supports loading the given media.</returns>
+        /// <returns><c>true</c> if this reader supports loading the given media.</returns>
         public bool IsExtensionSupported(string extension)
         {
             if (extension == null)
@@ -60,12 +60,12 @@ namespace DomainDrivenGameEngine.Media.Services
         }
 
         /// <summary>
-        /// Loads a given piece of media from the specified path.
+        /// Reads a given piece of media from the provided <see cref="Stream"/>.
         /// </summary>
-        /// <param name="stream">A <see cref="Stream"/> to the file to load.</param>
+        /// <param name="stream">A <see cref="Stream"/> to the file to read.</param>
         /// <param name="path">The path to the file that is the source of the provided <see cref="Stream"/>.</param>
         /// <param name="extension">The extension of the source file.</param>
-        /// <returns>The loaded media object.</returns>
-        public abstract TMedia Load(Stream stream, string path, string extension);
+        /// <returns>The read media object.</returns>
+        public abstract TMedia Read(Stream stream, string path, string extension);
     }
 }

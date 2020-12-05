@@ -11,7 +11,7 @@ namespace DomainDrivenGameEngine.Media.Models
     /// for gradually streaming music later on.  As such it falls to the implementation side of handling
     /// media to dispose the <see cref="Stream"/>.
     /// </remarks>
-    public class Music : IMedia
+    public class Music : BaseMedia
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Music"/> class.
@@ -19,7 +19,9 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <param name="channels">The number of channels the sound effect has.</param>
         /// <param name="sampleRate">The sample rate for the sound effect.</param>
         /// <param name="stream">The <see cref="Stream"/> for accessing the music.</param>
-        public Music(int channels, int sampleRate, Stream stream)
+        /// <param name="sourceStream">The source <see cref="Stream"/> used to read this music.</param>
+        public Music(int channels, int sampleRate, Stream stream, Stream sourceStream)
+            : base(sourceStream)
         {
             if (channels <= 0)
             {
@@ -49,6 +51,20 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <summary>
         /// Gets the stream for reading this music.
         /// </summary>
-        public Stream Stream { get; }
+        public Stream Stream { get; private set; }
+
+        /// <summary>
+        /// Release all resources managed by this music.
+        /// </summary>
+        public override void Dispose()
+        {
+            if (Stream != null)
+            {
+                Stream.Dispose();
+                Stream = null;
+            }
+
+            base.Dispose();
+        }
     }
 }

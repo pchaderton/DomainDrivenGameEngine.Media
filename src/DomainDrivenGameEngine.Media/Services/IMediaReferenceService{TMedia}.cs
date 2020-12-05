@@ -1,10 +1,9 @@
-﻿using System;
-using DomainDrivenGameEngine.Media.Models;
+﻿using DomainDrivenGameEngine.Media.Models;
 
 namespace DomainDrivenGameEngine.Media.Services
 {
     /// <summary>
-    /// An interface to a service for keeping track of references to media being used in the business logic of the application.
+    /// An interface to a service for tracking references to media being used in the business logic of the application.
     /// </summary>
     /// <typeparam name="TMedia">The type of media this is a reference service for.</typeparam>
     public interface IMediaReferenceService<TMedia>

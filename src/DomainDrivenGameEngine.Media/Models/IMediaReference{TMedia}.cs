@@ -11,5 +11,10 @@
         /// Gets the ID of this reference.
         /// </summary>
         int Id { get; }
+
+        /// <summary>
+        /// Gets the number of references being tracked for this reference.
+        /// </summary>
+        int ReferenceCount { get; }
     }
 }

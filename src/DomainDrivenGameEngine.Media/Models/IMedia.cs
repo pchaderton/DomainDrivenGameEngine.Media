@@ -1,9 +1,11 @@
-﻿namespace DomainDrivenGameEngine.Media.Models
+﻿using System;
+
+namespace DomainDrivenGameEngine.Media.Models
 {
     /// <summary>
     /// An interface describing a piece of media.
     /// </summary>
-    public interface IMedia
+    public interface IMedia : IDisposable
     {
     }
 }
