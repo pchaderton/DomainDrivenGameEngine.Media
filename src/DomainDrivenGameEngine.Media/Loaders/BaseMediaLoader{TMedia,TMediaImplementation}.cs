@@ -22,12 +22,12 @@ namespace DomainDrivenGameEngine.Media.Loaders
         /// Initializes a new instance of the <see cref="BaseMediaLoader{TMedia, TMediaImplementation}"/> class.
         /// </summary>
         /// <param name="supportedPathCounts">The number of path counts that this loader can support loading.  Defaults to 1.</param>
-        /// <param name="isSourceStreamRequired">A value indicating whether this loader requires file streams to be maintained.</param>
+        /// <param name="isSourceMediaRequired">A value indicating whether this loader requires the source media to be maintained after loading.</param>
         protected BaseMediaLoader(IEnumerable<uint> supportedPathCounts = null,
-                                  bool isSourceStreamRequired = false)
+                                  bool isSourceMediaRequired = false)
         {
             _expectedCountLookup = (supportedPathCounts ?? new uint[] { 1 }).ToHashSet();
-            IsSourceMediaRequired = isSourceStreamRequired;
+            IsSourceMediaRequired = isSourceMediaRequired;
         }
 
         /// <summary>

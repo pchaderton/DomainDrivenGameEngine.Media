@@ -20,7 +20,7 @@ namespace DomainDrivenGameEngine.Media.Models
         /// <param name="sampleRate">The sample rate for the sound effect.</param>
         /// <param name="stream">The <see cref="Stream"/> for accessing the music.</param>
         /// <param name="sourceStream">The source <see cref="Stream"/> used to read this music.</param>
-        public Music(int channels, int sampleRate, Stream stream, Stream sourceStream)
+        public Music(int channels, int sampleRate, Stream stream, Stream sourceStream = null)
             : base(sourceStream)
         {
             if (channels <= 0)

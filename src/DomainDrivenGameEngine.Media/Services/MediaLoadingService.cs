@@ -6,7 +6,7 @@ namespace DomainDrivenGameEngine.Media.Services
     /// <summary>
     /// A service for loading and unloading media across all media services.
     /// </summary>
-    public class MediaLoadingService : IMediaLoadingService, IDisposable
+    public class MediaLoadingService : IMediaLoadingService
     {
         /// <summary>
         /// The <see cref="IMediaReferenceLoadingService"/> objects to load and unload media with.
@@ -29,14 +29,6 @@ namespace DomainDrivenGameEngine.Media.Services
         public bool CanUnloadMedia()
         {
             return _mediaReferenceLoadingServices.Any(s => s.CanUnloadMedia());
-        }
-
-        /// <summary>
-        /// Disposes this service.
-        /// </summary>
-        public virtual void Dispose()
-        {
-            Reset();
         }
 
         /// <summary>
